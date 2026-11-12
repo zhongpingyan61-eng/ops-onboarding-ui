@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>补充制作材料</title>
+  <style>
+    :root{--surface:#fafafa;--fg:#18181b;--muted:#71717a;--subtle:#92929c;--line:#e4e4e7;--strong:#d4d4d8;--primary:#3072f6;--tint:#f2f6ff}
+    *{box-sizing:border-box}body{margin:0;background:var(--surface);color:var(--fg);font:15px/1.6 "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+    button,input,textarea{font:inherit}button{cursor:pointer}button,input,textarea{-webkit-tap-highlight-color:transparent}[hidden]{display:none!important}
+    .wrap{max-width:600px;margin:auto;padding:30px 20px 56px}.brand{text-align:center;font-size:18px;font-weight:650;margin-bottom:5px}.lead{text-align:center;font-size:12px;color:var(--subtle);margin:0 0 20px}
+    .panel{background:#fff;border:1px solid #eeeeef;border-radius:8px;padding:25px 25px 27px;margin-bottom:18px;box-shadow:0 1px 2px #00000006}
+    .panel[hidden]{display:none!important}
+    h1{margin:0 0 6px;font-size:22px;line-height:1.45;font-weight:650}h1:focus,h1:focus-visible{outline:none}h2{font-size:14px;font-weight:600;margin:0 0 8px}
+    button:focus-visible{outline:3px solid #a8c6ff;outline-offset:3px}
+    .sub{font-size:12px;color:var(--muted);margin:0 0 22px}.field{margin:0 0 16px;min-width:0}
+    .cap{display:block;margin:0 0 8px;font-size:13px;font-weight:550}.cap span{font-weight:400;color:var(--subtle);font-size:11px;margin-left:5px}
+    input[type=text],input[type=tel],input[type=email],textarea{width:100%;border:1px solid var(--strong);border-radius:6px;background:#fff;color:var(--fg);font-size:14px;min-width:0}
+    input[type=text],input[type=tel],input[type=email]{height:42px;padding:0 11px}textarea{padding:10px 12px;min-height:80px;resize:vertical}
+    input::placeholder,textarea::placeholder{color:#9a9aa3}
+    input:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px #3072f622}
+    .help{font-size:11px;color:var(--subtle);line-height:1.6;margin:7px 0 0}
+    .btn{min-height:43px;padding:10px 15px;border-radius:6px;font-size:13px;display:inline-flex;justify-content:center;align-items:center;border:1px solid var(--strong);background:#fff;color:var(--fg)}
+    .btn-primary{width:100%;background:var(--primary);border-color:var(--primary);color:#fff;font-size:14px;margin-top:4px}.btn-primary:hover{background:#2560d0}
+    .btn-secondary:hover{background:#f6f6f7}.btn-secondary{width:100%;margin-top:8px}
+    .banner-warn{background:#f8f1e4;color:#7a5414;border:1px solid #ecd9b0;border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.65;margin:0 0 14px}
+    .overview-intro{display:flex;align-items:center;gap:8px;font-size:12px;color:#26644c;margin:0 0 20px}.overview-intro:before{content:"";width:6px;height:6px;border-radius:50%;background:#66a582}
+    .summary{margin:0 0 8px}.summary>div{padding:13px 0;border-bottom:1px solid #eeeeef;display:grid;grid-template-columns:85px minmax(0,1fr);gap:15px}.summary dt{font-size:12px;color:var(--muted)}.summary dd{margin:0;font-size:13px;overflow-wrap:anywhere}
+    .footer-note{font-size:11px;color:var(--subtle);text-align:center;margin:11px 0 0}.page-footer{text-align:center;color:#a1a1aa;font-size:11px;margin-top:24px}
+    .error{font-size:12px;color:#b42318;line-height:1.6;margin:9px 0 12px}
+    .material-block{border-top:1px solid var(--line);padding-top:18px;margin-top:6px}
+    .material-block:first-of-type{border-top:0;padding-top:0;margin-top:0}
+    .material-tag{display:inline-block;font-size:11px;color:#245fce;background:var(--tint);border-radius:4px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+    .material-tag.optional{color:#8b6421;background:#f8f1e4}
+    .topic-list{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+    .topic-pill{border:1px solid var(--line);border-radius:6px;padding:8px 11px;font-size:12px;color:#52525b;background:#fafafa}
+    .file-names{font-size:11px;color:var(--muted);margin:6px 0 0}
+    .basics{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:19px}.basics .field{margin:0}
+    .copy-box{margin:14px 0 0}.copy-box textarea{min-height:110px;font-size:12px;line-height:1.6}
+    .summary-actions{margin-top:16px}
+
+    .detected{display:none;color:#245fce;font-size:11px;margin:0 0 8px}.detected.show{display:block}
+    .prefs{border-top:1px solid var(--line);padding-top:4px;margin:6px 0 18px}.prefs>summary{font-size:14px;font-weight:650;padding:10px 0;list-style:none;display:flex;align-items:center;gap:6px;cursor:pointer}.prefs>summary::-webkit-details-marker{display:none}.prefs>summary:before{content:"";width:0;height:0;border-style:solid;border-width:5px 0 5px 7px;border-color:transparent transparent transparent var(--muted);transform:translateY(1px)}.prefs[open]>summary:before{border-width:7px 5px 0 5px;border-color:var(--muted) transparent transparent transparent}.prefs>summary span{font-weight:400;color:var(--subtle);font-size:12px;margin-left:2px}
+
+    .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 8px}
+    .choice-card{display:flex;align-items:center;gap:10px;min-height:52px;padding:10px 14px;border:1px solid var(--strong);border-radius:8px;font-size:14px;color:var(--fg);background:#fff;line-height:1.4}
+    .choice-card:has(input:checked){border-color:var(--primary);background:var(--tint);color:#245fce}
+    .choice-card input{width:16px;height:16px;flex:0 0 16px;margin:0;accent-color:var(--primary);cursor:pointer}
+    .q-label{display:block;margin:0 0 8px;font-size:16px;font-weight:650;line-height:1.45}.q-label span{font-weight:400;color:var(--subtle);font-size:12px;margin-left:6px}
+
+    .sync-card{margin-top:12px;padding:14px 16px;border:1px solid var(--line);border-radius:8px;background:var(--tint)}
+    .sync-card .sync-label{font-size:12px;font-weight:550;color:#245fce;margin:0 0 8px}
+    .sync-card .summary{margin:0}.sync-card .summary>div{padding:8px 0;border-bottom:1px solid #d7e3fb}.sync-card .summary>div:last-child{border-bottom:0;padding-bottom:0}
+    .sync-card .summary dt{color:#5b7ab5}.sync-empty{margin-top:10px}
+
+    .copy-ok{color:#26644c;font-size:12px;text-align:left;margin:10px 0 0}
+    .agent-pick{margin-top:12px}
+    .agent-row{display:grid;grid-template-columns:108px minmax(0,1fr);gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+    .agent-row:last-child{border-bottom:0}
+    .agent-row .pick{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:550;cursor:pointer;user-select:none}
+    .agent-row .pick input{width:16px;height:16px;flex:0 0 16px;margin:0;accent-color:var(--primary);cursor:pointer}
+    .agent-row.is-off input[type=text],.agent-row.is-off input[type=tel],.agent-row.is-off input[type=email],.agent-row.is-off .photo-slot{opacity:.45}
+    .photo-slot{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .photo-slot .btn{width:auto;margin:0;min-height:38px;padding:6px 12px}
+    .file-names{margin:0}
+    @media(max-width:480px){.agent-row{grid-template-columns:1fr;gap:6px}}
+    @media(max-width:480px){.choice-grid{grid-template-columns:1fr}}
+    @media(max-width:480px){.wrap{padding:22px 13px 35px}.panel{padding:22px 18px}.basics{gap:12px;grid-template-columns:1fr}h1{font-size:21px}.summary>div{grid-template-columns:70px minmax(0,1fr);gap:12px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <noscript><p class="banner-warn">这个表单需要脚本才能提交。请用 Chrome 或 Safari 打开本文件，不要只在聊天预览里点击。把带房源链接的收集结果发回对话即可。</p></noscript>
+    <p class="banner-warn" id="previewWarn" hidden>当前像是在预览窗口里打开。这里经常点不了提交，也保存不了。请用电脑的浏览器打开本文件；填完后把带链接的结果发回对话。</p>
+    <div class="brand">制作材料</div>
+    <p class="lead">界面只负责收集 · 制作在对话里完成</p>
+
+    <section class="panel" id="p-form" aria-labelledby="formTitle">
+      <h1 id="formTitle" tabindex="-1">补充制作材料</h1>
+      <p class="sub">方案已确认，先做「房源展示」。把需要的材料放在这里；没有的可以先空着，能后补的会在制作时再问。</p>
+      <p class="cap">这次先做的内容</p>
+      <div class="topic-list">
+        <span class="topic-pill">房源展示 <span class="material-tag">需材料</span></span>
+      </div>
+      <form id="materialsForm" novalidate>
+        <div class="material-block">
+          <h2>房源展示</h2>
+          <p class="help" style="margin:0 0 14px">直接粘贴房源页面链接即可。标题、价格、地址和照片我会从链接里读取，不必经纪人手工填写。</p>
+          <div class="field">
+            <label class="cap" for="listingUrls">房源链接</label>
+            <textarea id="listingUrls" placeholder="例如：https://www.zillow.com/homedetails/…&#10;可一次贴多条，一行一个。" maxlength="2000"></textarea>
+            <p class="help">支持 Zillow、Realtor、Redfin 等公开房源页。贴上链接后不用再传照片或填写价格。</p>
+          </div>
+          <p class="detected" id="urlDetected" hidden></p>
+        </div>
+        <div class="material-block">
+          <div class="q-label" id="showAgentLabel">这次要不要展示经纪人信息？</div>
+          <div class="choice-grid" role="radiogroup" aria-labelledby="showAgentLabel">
+            <label class="choice-card"><input type="radio" name="showAgent" value="是">展示</label>
+            <label class="choice-card"><input type="radio" name="showAgent" value="否">不展示</label>
+          </div>
+          <p class="help">展示时会从开号信息同步。请勾选这条内容要露出的项；若要换号码或姓名，直接改即可，只影响这一条，不会改开号资料。</p>
+          <div id="agentSync" hidden>
+            <div class="sync-card agent-pick" id="agentSyncCard">
+              <p class="sync-label" id="agentSyncLabel">已从开号信息同步，勾选这次要展示的项</p>
+              <div class="agent-row" data-field="displayName">
+                <label class="pick"><input type="checkbox" id="useName" checked>姓名</label>
+                <input id="agentName" type="text" placeholder="例如：Sarah Chen" maxlength="80">
+              </div>
+              <div class="agent-row" data-field="displayTitle">
+                <label class="pick"><input type="checkbox" id="useTitle">头衔</label>
+                <input id="agentTitle" type="text" placeholder="例如：Realtor" maxlength="80">
+              </div>
+              <div class="agent-row" data-field="displayPhone">
+                <label class="pick"><input type="checkbox" id="usePhone" checked>电话</label>
+                <input id="agentPhone" type="tel" placeholder="例如：(512) 555-0100" maxlength="40">
+              </div>
+              <div class="agent-row" data-field="displayEmail">
+                <label class="pick"><input type="checkbox" id="useEmail">邮箱</label>
+                <input id="agentEmail" type="email" placeholder="例如：sarah@example.com" maxlength="80">
+              </div>
+              <div class="agent-row" data-field="displayPhoto">
+                <label class="pick"><input type="checkbox" id="usePhoto">头像</label>
+                <div class="photo-slot">
+                  <input id="agentPhoto" type="file" accept="image/*" hidden>
+                  <button type="button" class="btn btn-secondary" id="pickAgentPhoto">更换照片</button>
+                  <p class="file-names" id="agentPhotoName">还没有头像</p>
+                </div>
+              </div>
+            </div>
+            <p class="help sync-empty" id="agentSyncEmpty" hidden>没有带出开号时的对外信息时，也可以在上面勾选并填写这次要展示的内容。只用于这一条。</p>
+          </div>
+        </div>
+        <details class="prefs" id="extras">
+          <summary>补充说明 <span>选填，一般不用填</span></summary>
+          <div class="field" style="margin-top:14px">
+            <label class="cap" for="listingNote">还想强调什么 <span>选填</span></label>
+            <textarea id="listingNote" placeholder="例如：更适合首次购房家庭，想突出学区和通勤。" maxlength="800"></textarea>
+          </div>
+          <div class="field">
+            <label class="cap" for="extraMaterials">出镜要求或其他限制 <span>选填</span></label>
+            <textarea id="extraMaterials" placeholder="例如：不要露出客户正脸，不要出现内部价。" maxlength="800"></textarea>
+          </div>
+        </details>
+        <p class="error" id="formError" role="alert" hidden></p>
+        <button class="btn btn-primary" type="button" id="submitMaterials">完成收集</button>
+        <button class="btn btn-secondary" type="button" id="skipMaterials">暂时没有链接，先发回对话</button>
+        <p class="footer-note">收集完成后会自动复制，粘贴回对话再开始制作。</p>
+      </form>
+    </section>
+
+    <section class="panel" id="p-done" hidden aria-labelledby="doneTitle">
+      <h1 id="doneTitle" tabindex="-1">材料已收集</h1>
+      <p class="overview-intro">这一步只收材料 · 制作不在这里开始</p>
+      <dl class="summary">
+        <div><dt>先做内容</dt><dd>房源展示</dd></div>
+        <div><dt>房源链接</dt><dd id="sumUrls"></dd></div>
+        <div><dt>展示经纪人</dt><dd id="sumShowAgent"></dd></div>
+        <div id="rowAgent" hidden><dt>对外信息</dt><dd id="sumAgent"></dd></div>
+        <div id="rowNote" hidden><dt>补充说明</dt><dd id="sumNote"></dd></div>
+        <div id="rowExtra" hidden><dt>其他要求</dt><dd id="sumExtra"></dd></div>
+      </dl>
+      <p class="copy-ok" id="copyStatus" role="status">正在自动复制收集结果…</p>
+      <p class="footer-note" style="text-align:left;margin:8px 0 12px">收集完成后会自动复制。粘贴回对话后，我会从房源页读取信息再开始制作，无需你再传房源照片。</p>
+      <div class="copy-box">
+        <label class="cap" for="recordExport">收集结果 <span>已准备好粘贴</span></label>
+        <textarea id="recordExport" readonly></textarea>
+        <button type="button" class="btn btn-secondary" id="copyRecord" style="width:100%;margin-top:8px">再复制一次</button>
+      </div>
+      <div class="summary-actions">
+        <button class="btn btn-secondary" type="button" id="editMaterials">返回修改</button>
+      </div>
+    </section>
+
+    <footer class="page-footer">制作在对话中完成 · 账号授权、付费与公开发布分别确认</footer>
+  </main>
+  <script>
+    const $=id=>document.getElementById(id);
+    const listingHosts={
+      Zillow:["zillow.com"],
+      Realtor:["realtor.com"],
+      Redfin:["redfin.com"],
+      Homes:["homes.com"],
+      "Realtor.ca":["realtor.ca"],
+      Rightmove:["rightmove.co.uk"],
+      Zoopla:["zoopla.co.uk"]
+    };
+    function parseUrls(value){
+      return value.split(/[\s,，;；]+/).map(item=>item.trim()).filter(Boolean);
+    }
+    function detectListing(url){
+      try{
+        const host=new URL(url).hostname.toLowerCase().replace(/^www\./,"");
+        return Object.keys(listingHosts).find(name=>listingHosts[name].some(domain=>host===domain||host.endsWith("."+domain)))||"";
+      }catch(err){return ""}
+    }
+    function isUrl(value){
+      try{const u=new URL(value);return u.protocol==="http:"||u.protocol==="https:"}catch(err){return false}
+    }
+    const AGENT_FIELDS=[
+      {key:"displayName",use:"useName",input:"agentName",label:"姓名",defaultOn:true},
+      {key:"displayTitle",use:"useTitle",input:"agentTitle",label:"头衔",defaultOn:false},
+      {key:"displayPhone",use:"usePhone",input:"agentPhone",label:"电话",defaultOn:true},
+      {key:"displayEmail",use:"useEmail",input:"agentEmail",label:"邮箱",defaultOn:false},
+      {key:"displayPhoto",use:"usePhoto",input:"agentPhoto",label:"头像",defaultOn:false}
+    ];
+    let savedProfile=null;
+    let photoName="";
+    let profileFilled=false;
+    function hasProfile(profile){
+      return !!(profile&&(profile.displayName||profile.displayTitle||profile.displayPhone||profile.displayEmail||profile.displayPhoto));
+    }
+    function readSavedProfile(){
+      try{
+        const direct=localStorage.getItem("ops-display-profile");
+        if(direct){
+          const profile=JSON.parse(direct);
+          if(hasProfile(profile))return profile;
+        }
+        const lib=localStorage.getItem("ops-user-library");
+        if(lib){
+          const all=JSON.parse(lib);
+          const latest=Array.isArray(all)?all[0]:all;
+          if(hasProfile(latest))return {
+            displayName:latest.displayName||"",
+            displayTitle:latest.displayTitle||"",
+            displayPhone:latest.displayPhone||"",
+            displayEmail:latest.displayEmail||"",
+            displayPhoto:latest.displayPhoto||""
+          };
+        }
+      }catch(err){}
+      return null;
+    }
+    function syncRowState(){
+      AGENT_FIELDS.forEach(field=>{
+        const row=document.querySelector('[data-field="'+field.key+'"]');
+        if(row)row.classList.toggle("is-off",!$(field.use).checked);
+      });
+    }
+    function applySavedProfile(profile,force){
+      const source=profile||{};
+      if(!profileFilled||force){
+        $("agentName").value=source.displayName||"";
+        $("agentTitle").value=source.displayTitle||"";
+        $("agentPhone").value=source.displayPhone||"";
+        $("agentEmail").value=source.displayEmail||"";
+        photoName=source.displayPhoto||"";
+        $("agentPhotoName").textContent=photoName?("已同步 "+photoName):"还没有头像";
+        $("useName").checked=!!source.displayName;
+        $("useTitle").checked=false;
+        $("usePhone").checked=!!source.displayPhone;
+        $("useEmail").checked=false;
+        $("usePhoto").checked=false;
+        profileFilled=true;
+      }
+      const ok=hasProfile(source);
+      $("agentSyncLabel").textContent=ok?"已从开号信息同步，勾选这次要展示的项":"勾选并填写这次要展示的项";
+      $("agentSyncEmpty").hidden=ok;
+      syncRowState();
+    }
+    function selectedFields(){
+      return AGENT_FIELDS.filter(field=>{
+        if(!$(field.use).checked)return false;
+        const value=field.key==="displayPhoto"?photoName:$(field.input).value.trim();
+        return !!value;
+      });
+    }
+    function collect(){
+      const urls=parseUrls($("listingUrls").value);
+      const show=document.querySelector("[name=showAgent]:checked");
+      const current={
+        displayName:$("agentName").value.trim(),
+        displayTitle:$("agentTitle").value.trim(),
+        displayPhone:$("agentPhone").value.trim(),
+        displayEmail:$("agentEmail").value.trim(),
+        displayPhoto:photoName
+      };
+      const shown=selectedFields();
+      const shownKeys=shown.map(field=>field.key);
+      const overrides=[];
+      shown.forEach(field=>{
+        const now=current[field.key]||"";
+        const original=(savedProfile&&savedProfile[field.key])||"";
+        if(now&&now!==original)overrides.push(field.label);
+      });
+      return {
+        topic:"房源展示",
+        urls,
+        sources:urls.map(detectListing).filter(Boolean),
+        showAgent:show?show.value:"",
+        displayName:shownKeys.includes("displayName")?current.displayName:"",
+        displayTitle:shownKeys.includes("displayTitle")?current.displayTitle:"",
+        displayPhone:shownKeys.includes("displayPhone")?current.displayPhone:"",
+        displayEmail:shownKeys.includes("displayEmail")?current.displayEmail:"",
+        displayPhoto:shownKeys.includes("displayPhoto")?current.displayPhoto:"",
+        shownLabels:shown.map(field=>field.label),
+        overrides,
+        current,
+        synced:hasProfile(savedProfile),
+        note:$("listingNote").value.trim(),
+        extra:$("extraMaterials").value.trim(),
+        skipped:false
+      };
+    }
+    function agentLine(record){
+      const parts=record.shownLabels&&record.shownLabels.length?["展示 "+record.shownLabels.join("、")]:[];
+      const values=[record.displayName,record.displayTitle,record.displayPhone,record.displayEmail,record.displayPhoto].filter(Boolean);
+      if(values.length)parts.push(values.join(" · "));
+      if(record.overrides&&record.overrides.length)parts.push("其中"+record.overrides.join("、")+"已更换");
+      return parts.join(" ｜ ");
+    }
+    function fieldLine(label,value,overrides){
+      if(!value)return "";
+      return value+((overrides||[]).includes(label)?"（本次更换）":"");
+    }
+    function plaintext(record){
+      const rows=[
+        ["先做内容",record.topic],
+        ["房源链接",record.urls.join("\n")||(record.skipped?"未提供，可后补":"")],
+        ["识别来源",record.sources.filter((item,i,all)=>all.indexOf(item)===i).join("、")],
+        ["展示经纪人信息",record.showAgent||(record.skipped?"未选择":"")],
+        ["本次展示字段",record.showAgent==="是"?(record.shownLabels.join("、")||"未勾选"):""],
+        ["对外姓名",record.showAgent==="是"?fieldLine("姓名",record.displayName,record.overrides):""],
+        ["对外头衔",record.showAgent==="是"?fieldLine("头衔",record.displayTitle,record.overrides):""],
+        ["对外电话",record.showAgent==="是"?fieldLine("电话",record.displayPhone,record.overrides):""],
+        ["对外邮箱",record.showAgent==="是"?fieldLine("邮箱",record.displayEmail,record.overrides):""],
+        ["对外头像",record.showAgent==="是"?fieldLine("头像",record.displayPhoto,record.overrides):""],
+        ["补充说明",record.note],
+        ["其他要求",record.extra]
+      ].filter(row=>row[1]);
+      const head=record.skipped?"【制作材料收集结果】\n本次暂未提供房源链接，可后补，或在对话里改做不依赖房源的内容。":"【制作材料收集结果】";
+      const tail=record.showAgent==="是"?"请根据以上房源链接开始制作「房源展示」。房源信息从链接读取；经纪人信息只展示上面勾选的字段，标注「本次更换」的以本条为准，不要使用未勾选的对外信息。":"请根据以上房源链接开始制作「房源展示」。信息请从链接读取，不要在内容里展示经纪人姓名、电话等个人信息。";
+      return head+"\n"+rows.map(row=>row[0]+"："+row[1]).join("\n")+"\n\n"+tail;
+    }
+    function showDetected(){
+      const urls=parseUrls($("listingUrls").value);
+      const found=[...new Set(urls.map(detectListing).filter(Boolean))];
+      const box=$("urlDetected");
+      if(found.length){box.textContent="已识别 · "+found.join("、");box.classList.add("show");box.hidden=false;}
+      else{box.textContent="";box.classList.remove("show");box.hidden=true;}
+    }
+    function syncAgentView(){
+      const show=document.querySelector("[name=showAgent]:checked");
+      const on=!!(show&&show.value==="是");
+      $("agentSync").hidden=!on;
+      if(on)applySavedProfile(savedProfile,false);
+    }
+    async function autoCopyResult(){
+      const text=($("recordExport")&&$("recordExport").value||"").trim();
+      const status=$("copyStatus");
+      if(!status)return;
+      if(!text){status.textContent="还没有可复制的收集结果。";status.hidden=false;return}
+      try{
+        await navigator.clipboard.writeText(text);
+        status.textContent="已自动复制，请直接粘贴回对话。";
+        status.hidden=false;
+        return;
+      }catch(err){}
+      try{
+        $("recordExport").focus();
+        $("recordExport").select();
+        if(document.execCommand("copy")){
+          status.textContent="已自动复制，请直接粘贴回对话。";
+          status.hidden=false;
+          return;
+        }
+      }catch(err){}
+      status.textContent="这次没能自动复制。已帮你选中文本，按 Command + C（Windows 用 Ctrl + C）后再粘贴回对话。";
+      status.hidden=false;
+    }
+    function showDone(record,shouldCopy){
+      $("sumUrls").textContent=record.urls.length?record.urls.join("、"):(record.skipped?"暂未提供，可后补":"未填写");
+      $("sumShowAgent").textContent=record.showAgent?record.showAgent:(record.skipped?"未选择":"未选择");
+      const line=record.showAgent==="是"?agentLine(record):"";
+      $("sumAgent").textContent=line;$("rowAgent").hidden=!line;
+      $("sumNote").textContent=record.note;$("rowNote").hidden=!record.note;
+      $("sumExtra").textContent=record.extra;$("rowExtra").hidden=!record.extra;
+      $("recordExport").value=plaintext(record);
+      $("copyStatus").textContent=shouldCopy===false?"已自动复制，请直接粘贴回对话。":"正在自动复制收集结果…";
+      $("copyStatus").hidden=false;
+      $("p-form").hidden=true;$("p-done").hidden=false;
+      window.scrollTo(0,0);
+      $("doneTitle").tabIndex=-1;$("doneTitle").focus({preventScroll:true});
+      if(shouldCopy!==false)autoCopyResult();
+    }
+    function finish(skipped){
+      const record=collect();
+      if(skipped){record.skipped=true;$("formError").hidden=true;showDone(record);return}
+      if(!record.urls.length){
+        $("formError").textContent="请先粘贴至少一条房源链接。暂时没有的话，可以点「暂时没有链接，先发回对话」。";
+        $("formError").hidden=false;$("formError").scrollIntoView({block:"center"});$("listingUrls").focus();return;
+      }
+      const bad=record.urls.filter(url=>!isUrl(url));
+      if(bad.length){
+        $("formError").textContent="请填写完整的房源链接，需以 http 或 https 开头。";
+        $("formError").hidden=false;$("listingUrls").focus();return;
+      }
+      if(!record.showAgent){
+        $("formError").textContent="请选择这次要不要展示经纪人信息。";
+        $("formError").hidden=false;$("formError").scrollIntoView({block:"center"});return;
+      }
+      if(record.showAgent==="是"){
+        const checked=AGENT_FIELDS.filter(field=>$(field.use).checked);
+        if(!checked.length){
+          $("formError").textContent="请至少勾选一项要展示的经纪人信息，或改选「不展示」。";
+          $("formError").hidden=false;$("formError").scrollIntoView({block:"center"});return;
+        }
+        const empty=checked.find(field=>{
+          const value=field.key==="displayPhoto"?photoName:$(field.input).value.trim();
+          return !value;
+        });
+        if(empty){
+          $("formError").textContent="已勾选「"+empty.label+"」，但还没有内容。请补上，或取消勾选。";
+          $("formError").hidden=false;
+          if(empty.key!=="displayPhoto")$(empty.input).focus();
+          return;
+        }
+        if($("useEmail").checked&&$("agentEmail").value.trim()&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($("agentEmail").value.trim())){
+          $("formError").textContent="对外邮箱格式看起来不正确，可以改一下或取消勾选。";
+          $("formError").hidden=false;$("agentEmail").focus();return;
+        }
+      }
+      $("formError").hidden=true;showDone(record);
+    }
+    $("listingUrls").addEventListener("input",()=>{$("formError").hidden=true;showDetected()});
+    document.querySelectorAll("[name=showAgent]").forEach(input=>input.addEventListener("change",()=>{$("formError").hidden=true;syncAgentView()}));
+    AGENT_FIELDS.forEach(field=>{
+      $(field.use).addEventListener("change",()=>{$("formError").hidden=true;syncRowState()});
+      if(field.key!=="displayPhoto")$(field.input).addEventListener("input",()=>$("formError").hidden=true);
+    });
+    $("pickAgentPhoto").addEventListener("click",()=>$("agentPhoto").click());
+    $("agentPhoto").addEventListener("change",()=>{
+      const file=$("agentPhoto").files[0];
+      if(file){
+        photoName=file.name;
+        $("agentPhotoName").textContent="已选择 "+file.name;
+        $("usePhoto").checked=true;
+        syncRowState();
+      }
+    });
+    $("submitMaterials").addEventListener("click",event=>{event.preventDefault();finish(false)});
+    $("skipMaterials").addEventListener("click",()=>finish(true));
+    $("editMaterials").addEventListener("click",()=>{
+      $("p-done").hidden=true;$("p-form").hidden=false;window.scrollTo(0,0);$("formTitle").focus({preventScroll:true});
+    });
+    $("copyRecord").addEventListener("click",()=>autoCopyResult());
+    $("materialsForm").addEventListener("submit",event=>{event.preventDefault();finish(false)});
+    savedProfile=readSavedProfile();
+    try{if(window.top!==window.self)$("previewWarn").hidden=false;}catch(err){$("previewWarn").hidden=false;}
+    const preview=new URLSearchParams(location.search).get("preview");
+    if(preview==="done"){
+      showDone({topic:"房源展示",urls:["https://www.zillow.com/homedetails/example"],sources:["Zillow"],showAgent:"是",displayName:"Sarah Chen",displayTitle:"",displayPhone:"(512) 555-0199",displayEmail:"",displayPhoto:"",shownLabels:["姓名","电话"],overrides:["电话"],synced:true,note:"",extra:"",skipped:false},false);
+    }else if(preview==="show-agent"){
+      if(!hasProfile(savedProfile)){
+        savedProfile={displayName:"Sarah Chen",displayTitle:"Realtor",displayPhone:"(512) 555-0100",displayEmail:"sarah@example.com",displayPhoto:"headshot.jpg"};
+      }
+      document.querySelector("[name=showAgent][value='是']").checked=true;
+      applySavedProfile(savedProfile,true);
+      syncAgentView();
+    }
+  </script>
+</body>
+</html>
