@@ -1,0 +1,15 @@
+{
+  "name": "ops-onboarding-ui",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Collection UI and ops Agent MCP integration helpers for onboarding and production materials.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "dry-run": "node examples/dry-run.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -174,7 +174,8 @@
 
     <footer class="page-footer">制作在对话中完成 · 账号授权、付费与公开发布分别确认</footer>
   </main>
-  <script>
+  <script src="ops-collect-client.js"></script>
+<script>
     const $=id=>document.getElementById(id);
     const listingHosts={
       Zillow:["zillow.com"],
@@ -377,6 +378,7 @@
       $("sumNote").textContent=record.note;$("rowNote").hidden=!record.note;
       $("sumExtra").textContent=record.extra;$("rowExtra").hidden=!record.extra;
       $("recordExport").value=plaintext(record);
+      if(shouldCopy!==false&&window.OpsCollect) OpsCollect.persist("listing_materials",record,plaintext);
       $("copyStatus").textContent=shouldCopy===false?"已自动复制，请直接粘贴回对话。":"正在自动复制收集结果…";
       $("copyStatus").hidden=false;
       $("p-form").hidden=true;$("p-done").hidden=false;

@@ -1,6 +1,6 @@
 # 运营开号与素材收集界面
 
-这是开号信息收集和生产素材收集的界面，以及运营 Agent 的完整流程说明。本仓库只放这套收集界面和流程文档，不包含房源视频 MCP 或其他服务代码。
+这是开号信息收集和生产素材收集的界面，以及运营 Agent 的完整流程说明。仓库里同时提供把收集结果保存下来、并映射到运营 Agent MCP 工具参数的示例代码。这里不包含房源视频 MCP。
 
 流程按 MCP 中的运营 Agent 对齐：界面只负责开号收集和制作材料收集；方案、选题、验收和发布确认在对话里完成；制作、排期和复盘交给运营平台。不自动公开发布，交付不等于发布。
 
@@ -67,8 +67,11 @@
 | `ops-story.html` | 素材收集：成交故事（案例简述、链接、不限形式文件含 PDF/Word、补充信息） |
 | `ops-bio.html` | 素材收集：个人或团队介绍（链接、不限形式文件含 PDF/Word、介绍文字、补充信息） |
 | `screenshots/` | 界面关键状态截图，便于对照 |
+| `server.js` | 本地收集服务：托管页面并保存 JSON |
+| `lib/` | 解析收集结果，并生成运营 MCP 工具参数 |
+| `INTEGRATION.md` | 如何运行本地服务，以及如何接到运营 MCP |
 
-用浏览器直接打开这些 HTML 文件即可使用。
+用浏览器直接打开这些 HTML 文件即可使用。若要保存收集结果并查看对接方式，请看 [INTEGRATION.md](INTEGRATION.md)，运行 `npm start` 后打开 http://127.0.0.1:8787。
 
 开号页和素材页通过 `localStorage` 共享键 `ops-user-library` 和 `ops-display-profile`。注意：以 `file://` 分别打开时，浏览器可能不会共享存储。
 
@@ -98,7 +101,19 @@
 - 至少提供一项材料（链接、任意文件或介绍文字），或选择暂时跳过。
 - 收集结果用于后续撰写专业 Bio 文案；界面本身不生成文案。
 
+## 接到运营 MCP
+
+页面本身只收集，不会调用 MCP。用 `npm start` 启动本地服务后，完成收集会把 JSON 存到 `data/`，并仍然自动复制纯文本。运营 Agent 读取这些结果（或用户粘贴回对话的文本），再调用已连接的运营 MCP 工具。浏览器不能直接打 MCP，也没有虚构的发布接口。
+
+映射细节、9 步工具对照和 dry-run 示例见 [INTEGRATION.md](INTEGRATION.md)。本地验证：
+
+```bash
+npm test
+npm run dry-run
+```
+
 ## 截图
+
 
 - `screenshots/ops-flow-library.png`：第一界面（资料库 / 开号收集）
 - `screenshots/ops-flow-needs-profile-section.png`：对外展示信息分区

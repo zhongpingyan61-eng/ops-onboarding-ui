@@ -267,7 +267,8 @@
 
     <footer class="page-footer">方案确认在对话中完成 · 账号授权、付费与公开发布分别确认</footer>
   </main>
-  <script>
+  <script src="ops-collect-client.js"></script>
+<script>
     const $=id=>document.getElementById(id);
     const LIBRARY_KEY="ops-user-library";
     const state={platform:"Instagram",mode:"login",goal:"",audiences:new Set(),focuses:new Set(),directions:new Set(),customDirections:[],nextDirectionId:1,record:null};
@@ -445,6 +446,7 @@
         addCustomDirection();
         const record=collectRecord();
         saveLibrary(record);
+        if(window.OpsCollect) OpsCollect.persist("intake",record,recordPlaintext);
         renderLibrary(record);
         setView("p-library");
         autoCopyResult();

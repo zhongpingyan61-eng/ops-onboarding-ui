@@ -167,7 +167,8 @@
 
     <footer class="page-footer">制作在对话中完成 · 账号授权、付费与公开发布分别确认</footer>
   </main>
-  <script>
+  <script src="ops-collect-client.js"></script>
+<script>
     const $=id=>document.getElementById(id);
     let storyFiles=[];
     function parseUrls(value){
@@ -298,6 +299,7 @@
     function showDone(record,shouldCopy){
       fillSummary(record);
       $("recordExport").value=plaintext(record);
+      if(shouldCopy!==false&&window.OpsCollect) OpsCollect.persist("deal_story",record,plaintext);
       $("copyStatus").textContent=shouldCopy===false?"已自动复制，请直接粘贴回对话。如有原文件请一并发送。":"正在自动复制收集结果…";
       $("copyStatus").hidden=false;
       $("p-form").hidden=true;$("p-done").hidden=false;
