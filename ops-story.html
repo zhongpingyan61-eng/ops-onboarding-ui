@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>补充制作材料 · 成交故事</title>
+  <style>
+    :root{--surface:#fafafa;--fg:#18181b;--muted:#71717a;--subtle:#92929c;--line:#e4e4e7;--strong:#d4d4d8;--primary:#3072f6;--tint:#f2f6ff}
+    *{box-sizing:border-box}body{margin:0;background:var(--surface);color:var(--fg);font:15px/1.6 "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+    button,input,textarea{font:inherit}button{cursor:pointer}button,input,textarea{-webkit-tap-highlight-color:transparent}[hidden]{display:none!important}
+    .wrap{max-width:600px;margin:auto;padding:30px 20px 56px}.brand{text-align:center;font-size:18px;font-weight:650;margin-bottom:5px}.lead{text-align:center;font-size:12px;color:var(--subtle);margin:0 0 20px}
+    .panel{background:#fff;border:1px solid #eeeeef;border-radius:8px;padding:25px 25px 27px;margin-bottom:18px;box-shadow:0 1px 2px #00000006}
+    h1{margin:0 0 6px;font-size:22px;line-height:1.45;font-weight:650}h1:focus,h1:focus-visible{outline:none}h2{font-size:14px;font-weight:600;margin:0 0 8px}
+    button:focus-visible{outline:3px solid #a8c6ff;outline-offset:3px}
+    .sub{font-size:12px;color:var(--muted);margin:0 0 22px}.field{margin:0 0 16px;min-width:0}
+    .cap{display:block;margin:0 0 8px;font-size:13px;font-weight:550}.cap span{font-weight:400;color:var(--subtle);font-size:11px;margin-left:5px}
+    input[type=text],input[type=tel],input[type=email],textarea{width:100%;border:1px solid var(--strong);border-radius:6px;background:#fff;color:var(--fg);font-size:14px;min-width:0}
+    input[type=text],input[type=tel],input[type=email]{height:42px;padding:0 11px}textarea{padding:10px 12px;min-height:80px;resize:vertical}
+    input::placeholder,textarea::placeholder{color:#9a9aa3}
+    input:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px #3072f622}
+    .help{font-size:11px;color:var(--subtle);line-height:1.6;margin:7px 0 0}
+    .btn{min-height:43px;padding:10px 15px;border-radius:6px;font-size:13px;display:inline-flex;justify-content:center;align-items:center;border:1px solid var(--strong);background:#fff;color:var(--fg)}
+    .btn-primary{width:100%;background:var(--primary);border-color:var(--primary);color:#fff;font-size:14px;margin-top:4px}.btn-primary:hover{background:#2560d0}
+    .btn-secondary:hover{background:#f6f6f7}.btn-secondary{width:100%;margin-top:8px}
+    .banner-warn{background:#f8f1e4;color:#7a5414;border:1px solid #ecd9b0;border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.65;margin:0 0 14px}
+    .overview-intro{display:flex;align-items:center;gap:8px;font-size:12px;color:#26644c;margin:0 0 20px}.overview-intro:before{content:"";width:6px;height:6px;border-radius:50%;background:#66a582}
+    .summary{margin:0 0 8px}.summary>div{padding:13px 0;border-bottom:1px solid #eeeeef;display:grid;grid-template-columns:85px minmax(0,1fr);gap:15px}.summary dt{font-size:12px;color:var(--muted)}.summary dd{margin:0;font-size:13px;overflow-wrap:anywhere}
+    .footer-note{font-size:11px;color:var(--subtle);text-align:center;margin:11px 0 0}.page-footer{text-align:center;color:#a1a1aa;font-size:11px;margin-top:24px}
+    .error{font-size:12px;color:#b42318;line-height:1.6;margin:9px 0 12px}
+    .material-block{border-top:1px solid var(--line);padding-top:18px;margin-top:6px}
+    .material-block:first-of-type{border-top:0;padding-top:0;margin-top:0}
+    .material-tag{display:inline-block;font-size:11px;color:#245fce;background:var(--tint);border-radius:4px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+    .topic-list{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+    .topic-pill{border:1px solid var(--line);border-radius:6px;padding:8px 11px;font-size:12px;color:#52525b;background:#fafafa}
+    .file-names{font-size:11px;color:var(--muted);margin:6px 0 0}
+    .basics{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:0}.basics .field{margin:0}
+    .copy-box{margin:14px 0 0}.copy-box textarea{min-height:110px;font-size:12px;line-height:1.6}
+    .summary-actions{margin-top:16px}
+    .detected{display:none;color:#245fce;font-size:11px;margin:7px 0 0}.detected.show{display:block}
+    .prefs{border-top:1px solid var(--line);padding-top:4px;margin:6px 0 18px}.prefs>summary{font-size:14px;font-weight:650;padding:10px 0;list-style:none;display:flex;align-items:center;gap:6px;cursor:pointer}.prefs>summary::-webkit-details-marker{display:none}.prefs>summary:before{content:"";width:0;height:0;border-style:solid;border-width:5px 0 5px 7px;border-color:transparent transparent transparent var(--muted);transform:translateY(1px)}.prefs[open]>summary:before{border-width:7px 5px 0 5px;border-color:var(--muted) transparent transparent transparent}.prefs>summary span{font-weight:400;color:var(--subtle);font-size:12px;margin-left:2px}
+    .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 8px}
+    .choice-grid.three{grid-template-columns:1fr 1fr 1fr}
+    .choice-card{display:flex;align-items:center;gap:10px;min-height:52px;padding:10px 14px;border:1px solid var(--strong);border-radius:8px;font-size:14px;color:var(--fg);background:#fff;line-height:1.4}
+    .choice-card:has(input:checked){border-color:var(--primary);background:var(--tint);color:#245fce}
+    .choice-card input{width:16px;height:16px;flex:0 0 16px;margin:0;accent-color:var(--primary);cursor:pointer}
+    .q-label{display:block;margin:0 0 8px;font-size:16px;font-weight:650;line-height:1.45}.q-label span{font-weight:400;color:var(--subtle);font-size:12px;margin-left:6px}
+    .copy-ok{color:#26644c;font-size:12px;text-align:left;margin:10px 0 0}
+    .file-slot{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .file-slot .btn{width:auto;margin:0;min-height:38px;padding:6px 12px}
+    .file-list{margin:10px 0 0;padding:0;list-style:none}
+    .file-list li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}
+    .file-list li:last-child{border-bottom:0}
+    .file-list .kind{color:#245fce;background:var(--tint);border-radius:4px;padding:1px 7px;font-size:11px;margin-right:8px}
+    .file-list .remove{border:0;background:none;color:var(--muted);font-size:12px;padding:0;min-height:auto}
+    .file-list .remove:hover{color:#b42318}
+    .sync-hint{font-size:12px;color:#245fce;background:var(--tint);border-radius:8px;padding:10px 12px;margin:0 0 16px}
+    @media(max-width:480px){.choice-grid,.choice-grid.three{grid-template-columns:1fr}}
+    @media(max-width:480px){.wrap{padding:22px 13px 35px}.panel{padding:22px 18px}.basics{gap:12px;grid-template-columns:1fr}h1{font-size:21px}.summary>div{grid-template-columns:70px minmax(0,1fr);gap:12px}}
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <noscript><p class="banner-warn">这个表单需要脚本才能提交。请用 Chrome 或 Safari 打开本文件。把收集结果和原文件一起发回对话即可。</p></noscript>
+    <p class="banner-warn" id="previewWarn" hidden>当前像是在预览窗口里打开。这里经常点不了提交，也保存不了。请用电脑的浏览器打开本文件；填完后把收集结果和原文件一起发回对话。</p>
+    <div class="brand">制作材料</div>
+    <p class="lead">界面只负责收集 · 制作在对话里完成</p>
+
+    <section class="panel" id="p-form" aria-labelledby="formTitle">
+      <h1 id="formTitle" tabindex="-1">补充制作材料</h1>
+      <p class="sub">方案已确认，先做「成交故事」。用下面的案例表单补充简述，也可上传链接、图片、音频、视频、文档或补充文字；材料形式不限，没有的可以先空着。</p>
+      <p class="cap">这次先做的内容</p>
+      <div class="topic-list">
+        <span class="topic-pill">成交故事 <span class="material-tag">需材料</span></span>
+      </div>
+      <form id="storyForm" novalidate>
+        <div class="material-block">
+          <h2>案例简述</h2>
+          <p class="help" style="margin:0 0 14px">按这笔成交把基本情况写清楚即可。细节不必填全，能后补的会在制作时再问。</p>
+          <div class="field">
+            <div class="q-label" id="dealTypeLabel">这笔是 <span>选填</span></div>
+            <div class="choice-grid three" role="radiogroup" aria-labelledby="dealTypeLabel">
+              <label class="choice-card"><input type="radio" name="dealType" value="帮客户买入">帮客户买入</label>
+              <label class="choice-card"><input type="radio" name="dealType" value="帮业主卖出">帮业主卖出</label>
+              <label class="choice-card"><input type="radio" name="dealType" value="其他">其他</label>
+            </div>
+          </div>
+          <div class="field">
+            <label class="cap" for="area">区域或社区 <span>选填</span></label>
+            <input id="area" type="text" placeholder="例如：Riverside, CA 或 East Austin" maxlength="120">
+          </div>
+          <div class="basics" style="margin-bottom:16px">
+            <div class="field">
+              <label class="cap" for="timing">成交时间或周期 <span>选填</span></label>
+              <input id="timing" type="text" placeholder="例如：2026年3月，约18天" maxlength="80">
+            </div>
+            <div class="field">
+              <label class="cap" for="price">成交价格或区间 <span>选填</span></label>
+              <input id="price" type="text" placeholder="例如：$625,000" maxlength="80">
+            </div>
+          </div>
+          <div class="field">
+            <label class="cap" for="brief">案例简述 <span>选填</span></label>
+            <textarea id="brief" placeholder="例如：客户是第一次买房的年轻家庭，看了两周，最终在预算内买到学区房。可以写遇到的问题、你怎么帮的，以及结果。" maxlength="2000" style="min-height:120px"></textarea>
+            <p class="help">不用写完整文案。提到客户时，如需匿名请注明；不要填写未授权公开的姓名或联系方式。</p>
+          </div>
+        </div>
+
+        <div class="material-block">
+          <h2>案例材料</h2>
+          <div class="field">
+            <label class="cap" for="storyLinks">相关链接 <span>选填</span></label>
+            <textarea id="storyLinks" placeholder="例如：房源页、客户评价、新闻报道、网盘或文档分享链接。&#10;可一次贴多条，一行一个。" maxlength="2000"></textarea>
+            <p class="help">支持网页、网盘、文档或音视频分享链接。已识别的条数会显示在下面。</p>
+            <p class="detected" id="linkDetected" hidden></p>
+          </div>
+          <div class="field">
+            <span class="cap">上传文件 <span>选填，形式不限</span></span>
+            <div class="file-slot">
+              <input id="storyFiles" type="file" accept="image/*,audio/*,video/*,text/*,.pdf,.txt,.md,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv,.rtf,.zip" multiple hidden>
+              <button type="button" class="btn btn-secondary" id="pickStoryFiles">选择文件</button>
+              <p class="file-names" id="storyFileHint">可多选照片、录音、视频、PDF、Word 或其他文件</p>
+            </div>
+            <ul class="file-list" id="storyFileList" hidden></ul>
+            <p class="help">支持图片、音频、视频、PDF、Word 等文档。收集结果里会列出文件名。请把原文件和复制的结果一起发回对话。</p>
+          </div>
+        </div>
+
+        <details class="prefs" id="extras">
+          <summary>补充信息 <span>选填，一般不用填</span></summary>
+          <div class="field" style="margin-top:14px">
+            <label class="cap" for="note">还想补充什么 <span>选填</span></label>
+            <textarea id="note" placeholder="例如：不要露出客户正脸；更想强调看房效率和学区。" maxlength="800"></textarea>
+          </div>
+        </details>
+        <p class="error" id="formError" role="alert" hidden></p>
+        <button class="btn btn-primary" type="button" id="submitStory">完成收集</button>
+        <button class="btn btn-secondary" type="button" id="skipStory">暂时没有材料，先发回对话</button>
+        <p class="footer-note">收集完成后会自动复制，请把结果和原文件一起发回对话再开始制作。</p>
+      </form>
+    </section>
+
+    <section class="panel" id="p-done" hidden aria-labelledby="doneTitle">
+      <h1 id="doneTitle" tabindex="-1">材料已收集</h1>
+      <p class="overview-intro">这一步只收材料 · 制作不在这里开始</p>
+      <dl class="summary">
+        <div><dt>先做内容</dt><dd>成交故事</dd></div>
+        <div id="rowType" hidden><dt>这笔是</dt><dd id="sumType"></dd></div>
+        <div id="rowArea" hidden><dt>区域</dt><dd id="sumArea"></dd></div>
+        <div id="rowTiming" hidden><dt>时间或周期</dt><dd id="sumTiming"></dd></div>
+        <div id="rowPrice" hidden><dt>价格</dt><dd id="sumPrice"></dd></div>
+        <div id="rowBrief" hidden><dt>案例简述</dt><dd id="sumBrief"></dd></div>
+        <div id="rowLinks" hidden><dt>相关链接</dt><dd id="sumLinks"></dd></div>
+        <div id="rowFiles" hidden><dt>上传文件</dt><dd id="sumFiles"></dd></div>
+        <div id="rowNote" hidden><dt>补充信息</dt><dd id="sumNote"></dd></div>
+      </dl>
+      <p class="copy-ok" id="copyStatus" role="status">正在自动复制收集结果…</p>
+      <p class="footer-note" style="text-align:left;margin:8px 0 12px">收集完成后会自动复制。如有原文件，请一并发送回对话后再开始制作。</p>
+      <div class="copy-box">
+        <label class="cap" for="recordExport">收集结果 <span>已准备好粘贴</span></label>
+        <textarea id="recordExport" readonly></textarea>
+        <button type="button" class="btn btn-secondary" id="copyRecord" style="width:100%;margin-top:8px">再复制一次</button>
+      </div>
+      <div class="summary-actions">
+        <button class="btn btn-secondary" type="button" id="editStory">返回修改</button>
+      </div>
+    </section>
+
+    <footer class="page-footer">制作在对话中完成 · 账号授权、付费与公开发布分别确认</footer>
+  </main>
+  <script>
+    const $=id=>document.getElementById(id);
+    let storyFiles=[];
+    function parseUrls(value){
+      return value.split(/[\s,，;；]+/).map(item=>item.trim()).filter(Boolean);
+    }
+    function isUrl(value){
+      try{const u=new URL(value);return u.protocol==="http:"||u.protocol==="https:"}catch(err){return false}
+    }
+    function mediaKind(file){
+      const t=(file.type||"").toLowerCase();
+      const n=(file.name||file.fileName||"").toLowerCase();
+      if(t.startsWith("image/")||/\.(png|jpe?g|gif|webp|heic|heif|bmp|tiff?)$/.test(n))return "图片";
+      if(t.startsWith("audio/")||/\.(mp3|m4a|wav|aac|ogg|flac|wma)$/.test(n))return "音频";
+      if(t.startsWith("video/")||/\.(mp4|mov|webm|m4v|avi|mkv|mpeg?)$/.test(n))return "视频";
+      if(t.startsWith("text/")||/\.(txt|md|rtf)$/.test(n))return "文本";
+      if(t==="application/pdf"||/\.pdf$/.test(n))return "PDF";
+      if(/\.(docx?|pptx?|xlsx?|csv)$/.test(n)||t.includes("word")||t.includes("officedocument")||t.includes("msword")||t.includes("spreadsheet")||t.includes("presentation"))return "文档";
+      return "文件";
+    }
+    function dealType(){
+      const el=document.querySelector("[name=dealType]:checked");
+      return el?el.value:"";
+    }
+    function collect(){
+      return {
+        topic:"成交故事",
+        dealType:dealType(),
+        area:$("area").value.trim(),
+        timing:$("timing").value.trim(),
+        price:$("price").value.trim(),
+        brief:$("brief").value.trim(),
+        links:parseUrls($("storyLinks").value),
+        files:storyFiles.map(file=>({name:file.name,kind:mediaKind(file)})),
+        note:$("note").value.trim(),
+        skipped:false
+      };
+    }
+    function hasMaterial(record){
+      return !!(record.dealType||record.area||record.timing||record.price||record.brief||record.links.length||record.files.length||record.note);
+    }
+    function fileLine(files){
+      return files.map(file=>file.name+"（"+(file.kind||mediaKind(file))+"）").join("、");
+    }
+    function plaintext(record){
+      const rows=[
+        ["先做内容",record.topic],
+        ["这笔是",record.dealType],
+        ["区域或社区",record.area],
+        ["成交时间或周期",record.timing],
+        ["成交价格或区间",record.price],
+        ["案例简述",record.brief],
+        ["相关链接",record.links.join("\n")],
+        ["上传文件",fileLine(record.files)],
+        ["补充信息",record.note]
+      ].filter(row=>row[1]);
+      const head=record.skipped?"【制作材料收集结果】\n本次暂未提供成交故事材料，可后补，或在对话里改做不依赖案例的内容。":"【制作材料收集结果】";
+      const tail="请根据以上材料开始制作「成交故事」。做成叙事型内容即可。没有提供的信息不要编造；上传文件请以对话里随结果一并发送的原文件为准。提到客户时，补充信息里要求匿名的请匿名处理。";
+      return head+"\n"+rows.map(row=>row[0]+"："+row[1]).join("\n")+"\n\n"+tail;
+    }
+    function showDetected(){
+      const urls=parseUrls($("storyLinks").value);
+      const box=$("linkDetected");
+      const good=urls.filter(isUrl);
+      const bad=urls.filter(url=>!isUrl(url));
+      if(good.length){
+        box.textContent="已识别 "+good.length+" 条链接"+(bad.length?"，另有 "+bad.length+" 条需要改成完整网址":"");
+        box.classList.add("show");box.hidden=false;
+      }else if(urls.length){
+        box.textContent="请填写完整链接，需以 http 或 https 开头。";
+        box.classList.add("show");box.hidden=false;
+      }else{box.textContent="";box.classList.remove("show");box.hidden=true;}
+    }
+    function renderFiles(){
+      const list=$("storyFileList");
+      const hint=$("storyFileHint");
+      list.innerHTML="";
+      if(!storyFiles.length){
+        list.hidden=true;
+        hint.textContent="可多选照片、录音、视频、PDF、Word 或其他文件";
+        return;
+      }
+      const counts={图片:0,音频:0,视频:0,文本:0,PDF:0,文档:0,文件:0};
+      storyFiles.forEach((file,index)=>{
+        const kind=mediaKind(file);
+        counts[kind]=(counts[kind]||0)+1;
+        const li=document.createElement("li");
+        li.innerHTML='<span><span class="kind">'+kind+'</span>'+file.name+'</span>';
+        const btn=document.createElement("button");
+        btn.type="button";btn.className="remove";btn.textContent="移除";
+        btn.addEventListener("click",()=>{storyFiles=storyFiles.filter((_,i)=>i!==index);renderFiles();});
+        li.appendChild(btn);list.appendChild(li);
+      });
+      list.hidden=false;
+      const parts=["图片","音频","视频","文本","PDF","文档","文件"].filter(k=>counts[k]).map(k=>counts[k]+" 个"+k);
+      hint.textContent="已选择 "+parts.join("、");
+    }
+    async function autoCopyResult(){
+      const text=($("recordExport")&&$("recordExport").value||"").trim();
+      const status=$("copyStatus");
+      if(!status)return;
+      if(!text){status.textContent="还没有可复制的收集结果。";status.hidden=false;return}
+      try{
+        await navigator.clipboard.writeText(text);
+        status.textContent="已自动复制，请直接粘贴回对话。如有原文件请一并发送。";
+        status.hidden=false;return;
+      }catch(err){}
+      try{
+        $("recordExport").focus();$("recordExport").select();
+        if(document.execCommand("copy")){
+          status.textContent="已自动复制，请直接粘贴回对话。如有原文件请一并发送。";
+          status.hidden=false;return;
+        }
+      }catch(err){}
+      status.textContent="这次没能自动复制。已帮你选中文本，按 Command + C（Windows 用 Ctrl + C）后再粘贴回对话。";
+      status.hidden=false;
+    }
+    function fillSummary(record){
+      const set=(row,sum,value)=>{$(sum).textContent=value||"";$ (row).hidden=!value;};
+      set("rowType","sumType",record.dealType);
+      set("rowArea","sumArea",record.area);
+      set("rowTiming","sumTiming",record.timing);
+      set("rowPrice","sumPrice",record.price);
+      set("rowBrief","sumBrief",record.brief);
+      set("rowLinks","sumLinks",record.links.join("、"));
+      set("rowFiles","sumFiles",fileLine(record.files));
+      set("rowNote","sumNote",record.note);
+    }
+    function showDone(record,shouldCopy){
+      fillSummary(record);
+      $("recordExport").value=plaintext(record);
+      $("copyStatus").textContent=shouldCopy===false?"已自动复制，请直接粘贴回对话。如有原文件请一并发送。":"正在自动复制收集结果…";
+      $("copyStatus").hidden=false;
+      $("p-form").hidden=true;$("p-done").hidden=false;
+      window.scrollTo(0,0);
+      $("doneTitle").tabIndex=-1;$("doneTitle").focus({preventScroll:true});
+      if(shouldCopy!==false)autoCopyResult();
+    }
+    function finish(skipped){
+      const record=collect();
+      if(skipped){record.skipped=true;$("formError").hidden=true;showDone(record);return}
+      const bad=record.links.filter(url=>!isUrl(url));
+      if(bad.length){
+        $("formError").textContent="请填写完整的链接，需以 http 或 https 开头。";
+        $("formError").hidden=false;$("storyLinks").focus();return;
+      }
+      if(!hasMaterial(record)){
+        $("formError").textContent="请至少提供一项：案例简述、链接，或任意文件。暂时没有的话，可以点「暂时没有材料，先发回对话」。";
+        $("formError").hidden=false;$("formError").scrollIntoView({block:"center"});return;
+      }
+      $("formError").hidden=true;showDone(record);
+    }
+    $("storyLinks").addEventListener("input",()=>{$("formError").hidden=true;showDetected()});
+    $("pickStoryFiles").addEventListener("click",()=>$("storyFiles").click());
+    $("storyFiles").addEventListener("change",()=>{
+      const added=Array.from($("storyFiles").files||[]);
+      added.forEach(file=>{
+        if(!storyFiles.some(item=>item.name===file.name&&item.size===file.size&&item.lastModified===file.lastModified))storyFiles.push(file);
+      });
+      $("storyFiles").value="";
+      $("formError").hidden=true;
+      renderFiles();
+    });
+    ["area","timing","price","brief","note"].forEach(id=>$(id).addEventListener("input",()=>$("formError").hidden=true));
+    document.querySelectorAll("[name=dealType]").forEach(input=>input.addEventListener("change",()=>$("formError").hidden=true));
+    $("submitStory").addEventListener("click",event=>{event.preventDefault();finish(false)});
+    $("skipStory").addEventListener("click",()=>finish(true));
+    $("editStory").addEventListener("click",()=>{$("p-done").hidden=true;$("p-form").hidden=false;window.scrollTo(0,0);$("formTitle").focus({preventScroll:true});});
+    $("copyRecord").addEventListener("click",()=>autoCopyResult());
+    $("storyForm").addEventListener("submit",event=>{event.preventDefault();finish(false)});
+    try{if(window.top!==window.self)$("previewWarn").hidden=false;}catch(err){$("previewWarn").hidden=false;}
+    const preview=new URLSearchParams(location.search).get("preview");
+    if(preview==="done"){
+      showDone({topic:"成交故事",dealType:"帮业主卖出",area:"Riverside, CA",timing:"2026年3月，约18天成交",price:"$625,000",brief:"客户是第一次卖房的家庭，希望尽快搬到学区附近。看房和下offer大约两周，最终按预期价格成交。",links:["https://www.zillow.com/homedetails/example"],files:[{name:"kitchen.jpg",type:"image/jpeg"},{name:"walkthrough.mp4",type:"video/mp4"},{name:"owner-note.m4a",type:"audio/mp4"},{name:"closing-notes.pdf",type:"application/pdf"}],note:"不要露出客户正脸。",skipped:false},false);
+    }else if(preview==="filled"){
+      document.querySelector("[name=dealType][value='帮业主卖出']").checked=true;
+      $("area").value="Riverside, CA";
+      $("timing").value="2026年3月，约18天成交";
+      $("price").value="$625,000";
+      $("brief").value="客户是第一次卖房的家庭，希望尽快搬到学区附近。看房和下offer大约两周，最终按预期价格成交。";
+      $("storyLinks").value="https://www.zillow.com/homedetails/example";
+      $("note").value="不要露出客户正脸。";
+      storyFiles=[{name:"kitchen.jpg",type:"image/jpeg"},{name:"walkthrough.mp4",type:"video/mp4"},{name:"owner-note.m4a",type:"audio/mp4"},{name:"closing-notes.pdf",type:"application/pdf"}];
+      $("extras").open=true;
+      showDetected();renderFiles();
+    }
+  </script>
+</body>
+</html>
