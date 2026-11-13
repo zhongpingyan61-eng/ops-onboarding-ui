@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>前 5 期主题确认</title>
+  <link rel="stylesheet" href="ops-ui.css">
+</head>
+<body>
+  <main class="wrap">
+    <div class="brand">前 5 期主题</div>
+    <p class="lead">集中修改、替换、调整顺序并确认 · 未确认的主题不会开做</p>
+    <section class="card">
+      <h1>先确认要做的前 5 期</h1>
+      <p class="sub">你自己的内容会优先保留并完善。可以改题目和要点、替换整期、调整顺序。全部确认后，我会按这个顺序建立内容日历。</p>
+      <div id="topicList"></div>
+      <div class="custom-row" style="margin:8px 0 16px">
+        <input id="ownTitle" type="text" placeholder="添加你已经想好的选题" maxlength="80">
+        <button type="button" class="btn btn-secondary" id="addOwn">添加我的选题</button>
+      </div>
+      <p class="error" id="formError" hidden></p>
+      <button type="button" class="btn btn-primary" id="confirmAll">确认已勾选的主题</button>
+      <p class="footer-note">未确认的主题会清楚地标为「未确认」，不会直接进入制作。</p>
+    </section>
+    <section class="card" id="savedCard" hidden>
+      <p class="overview-intro" id="savedIntro">主题已保存</p>
+      <p class="banner-ok" id="savedMessage"></p>
+      <a class="btn btn-primary" href="ops-calendar.html" style="text-decoration:none">查看内容日历</a>
+    </section>
+    <footer class="page-footer">长期方案确定方向 · 这里确定前 5 期做什么</footer>
+  </main>
+  <script src="ops-collect-client.js"></script>
+  <script>
+    const $=id=>document.getElementById(id);
+    const emptyTopic=(index,source="recommended")=>({
+      id:"topic-"+Date.now()+"-"+index,
+      order:index,
+      source,
+      confirmed:false,
+      title:"",
+      audience:"",
+      corePoint:"",
+      opening:"",
+      format:"视频",
+      rationale:"",
+      assets:""
+    });
+    const samples=[
+      {title:"第一次买房要先搞清什么",audience:"准备在 Riverside 买第一套房的家庭",corePoint:"先分清预算、贷款预批和必须看的条件，再去看房。",opening:"很多第一次买房的人一上来就约看房，后面才会发现预算对不上。",format:"视频",rationale:"贴近首次购房者的高频疑问，适合作为开场期。",assets:"本地贷款预批常见材料说明即可，不必先出镜。"},
+      {title:"Riverside 这一季市场怎么看",audience:"观望中的买家和准备卖房的业主",corePoint:"用一组清楚的数字说明成交节奏和议价空间，不夸张。",opening:"先报一个本地买家最关心的数：现在挂牌后平均要多久能谈下来。",format:"视频",rationale:"建立地区专业感，并为后续房源内容铺垫。",assets:"需核实最近公开市场数据。"},
+      {title:"一套适合家庭的房子怎么讲",audience:"有孩子、看重学区和通勤的买家",corePoint:"少堆参数，多讲谁会住得舒服、每天怎么用这些空间。",opening:"不要先报价格，先带观众走进客厅，看下午的光线落到哪里。",format:"视频",rationale:"把房源展示做成有对象的内容，而不是清单。",assets:"需要一套可公开的房源照片或链接；没有则可先用示意图说明结构。"},
+      {title:"卖房前 30 天该准备什么",audience:"打算近期挂牌的业主",corePoint:"把整理、估价和报价策略拆成可执行的步骤。",opening:"卖房最容易被拖延的，不是拍照，而是决定先改什么、先不改什么。",format:"视频",rationale:"服务卖家，并与长期方案中的双边受众对应。",assets:"可选用一份卖前检查清单；真实成交案例非必须。"},
+      {title:"我怎样帮你在这里安家",audience:"还不认识你、但已在考虑本地置业的人",corePoint:"用具体服务地区和做事方式介绍自己，而不是空泛头衔。",opening:"先说自己常走哪些社区，再讲第一次见面通常会一起做哪三件事。",format:"视频",rationale:"适合放在前 5 期里建立信任；个人信息展示将在制作前单独确认。",assets:"若要出镜，需确认是否展示姓名、经纪公司、服务地区或联系方式。"}
+    ];
+    let topics=samples.map((item,index)=>({...emptyTopic(index+1),...item,id:"topic-"+(index+1)}));
+
+    try{
+      const saved=JSON.parse(localStorage.getItem("ops-last-topics")||"null");
+      if(saved&&Array.isArray(saved.topics)&&saved.topics.length) topics=saved.topics;
+    }catch(err){}
+
+    function move(index,delta){
+      const next=index+delta;
+      if(next<0||next>=topics.length)return;
+      const copy=topics.slice();
+      const [item]=copy.splice(index,1);
+      copy.splice(next,0,item);
+      topics=copy.map((topic,i)=>({...topic,order:i+1}));
+      render();
+    }
+    function removeTopic(index){
+      topics=topics.filter((_,i)=>i!==index).map((topic,i)=>({...topic,order:i+1}));
+      render();
+    }
+    function readFields(index){
+      const root=document.querySelector('[data-index="'+index+'"]');
+      if(!root)return;
+      const topic=topics[index];
+      ["title","audience","corePoint","opening","format","rationale","assets"].forEach(key=>{
+        const field=root.querySelector('[data-key="'+key+'"]');
+        if(field) topic[key]=field.value;
+      });
+      const box=root.querySelector('[data-key="confirmed"]');
+      topic.confirmed=box?box.checked:false;
+    }
+    function syncAll(){topics.forEach((_,index)=>readFields(index))}
+    function render(){
+      const list=$("topicList");
+      list.replaceChildren();
+      topics.forEach((topic,index)=>{
+        const wrap=document.createElement("article");
+        wrap.className="topic "+(topic.confirmed?"confirmed":"unconfirmed");
+        wrap.dataset.index=String(index);
+        const sourceBadge=topic.source==="user"?'<span class="badge user">你的选题</span>':'<span class="badge ready">推荐</span>';
+        const stateBadge=topic.confirmed?'<span class="badge ready">已确认</span>':'<span class="badge wait">未确认</span>';
+        wrap.innerHTML=`
+          <div class="topic-head">
+            <div><strong>第 ${index+1} 期</strong>${sourceBadge}${stateBadge}</div>
+            <div class="topic-actions">
+              <button type="button" class="ghost" data-act="up"${index===0?" disabled":""}>上移</button>
+              <button type="button" class="ghost" data-act="down"${index===topics.length-1?" disabled":""}>下移</button>
+              <button type="button" class="ghost" data-act="remove">移除</button>
+            </div>
+          </div>
+          <label class="chip" style="margin-bottom:12px"><input type="checkbox" data-key="confirmed"${topic.confirmed?" checked":""}>确认本期可以进入排期</label>
+          <div class="field"><label class="cap">题目</label><input data-key="title" type="text" value=""></div>
+          <div class="grid-2">
+            <div class="field"><label class="cap">讲给谁</label><input data-key="audience" type="text" value=""></div>
+            <div class="field"><label class="cap">形式</label><input data-key="format" type="text" value=""></div>
+          </div>
+          <div class="field"><label class="cap">核心观点</label><textarea data-key="corePoint"></textarea></div>
+          <div class="field"><label class="cap">开场</label><textarea data-key="opening"></textarea></div>
+          <div class="field"><label class="cap">推荐理由</label><textarea data-key="rationale"></textarea></div>
+          <div class="field"><label class="cap">必要素材</label><textarea data-key="assets"></textarea></div>
+        `;
+        ["title","audience","corePoint","opening","format","rationale","assets"].forEach(key=>{
+          wrap.querySelector('[data-key="'+key+'"]').value=topic[key]||"";
+        });
+        wrap.querySelector("[data-act=up]").addEventListener("click",()=>{syncAll();move(index,-1)});
+        wrap.querySelector("[data-act=down]").addEventListener("click",()=>{syncAll();move(index,1)});
+        wrap.querySelector("[data-act=remove]").addEventListener("click",()=>{syncAll();removeTopic(index)});
+        wrap.querySelector('[data-key="confirmed"]').addEventListener("change",()=>{readFields(index);render()});
+        list.append(wrap);
+      });
+    }
+    function collectionRecord(){
+      syncAll();
+      return {
+        savedAt:new Date().toISOString(),
+        batch:"first-5",
+        topics:topics.map((topic,index)=>({...topic,order:index+1}))
+      };
+    }
+    function plaintext(record){
+      const lines=["【前5期主题】"];
+      record.topics.forEach((topic,index)=>{
+        lines.push("第 "+(index+1)+" 期主题："+topic.title+(topic.confirmed?"（已确认）":"（未确认）"));
+        if(topic.source==="user") lines.push("来源：用户已有选题");
+        if(topic.audience) lines.push("讲给谁："+topic.audience);
+        if(topic.corePoint) lines.push("核心观点："+topic.corePoint);
+        if(topic.opening) lines.push("开场："+topic.opening);
+        if(topic.format) lines.push("形式："+topic.format);
+        if(topic.rationale) lines.push("推荐理由："+topic.rationale);
+        if(topic.assets) lines.push("必要素材："+topic.assets);
+      });
+      return lines.join("\n");
+    }
+    $("addOwn").addEventListener("click",()=>{
+      syncAll();
+      const title=$("ownTitle").value.trim();
+      const topic=emptyTopic(topics.length+1,"user");
+      topic.title=title||"我的选题";
+      topics.push(topic);
+      $("ownTitle").value="";
+      render();
+    });
+    $("confirmAll").addEventListener("click",async()=>{
+      const record=collectionRecord();
+      const confirmed=record.topics.filter(item=>item.confirmed);
+      if(!confirmed.length){$("formError").hidden=false;$("formError").textContent="请至少确认一期主题。未确认的主题不会开做。";return}
+      $("formError").hidden=true;
+      const result=window.OpsCollect?await OpsCollect.persist("topics",record,plaintext):{ok:false,reason:"no-local-service"};
+      try{localStorage.setItem("ops-confirmed-topics",JSON.stringify({topics:confirmed,savedAt:record.savedAt}))}catch(err){}
+      $("savedCard").hidden=false;
+      $("savedIntro").textContent=result.ok?"主题已保存":"主题已记在本机";
+      $("savedMessage").textContent="已确认 "+confirmed.length+" 期，未确认 "+(record.topics.length-confirmed.length)+" 期。未确认的不会进入制作。请继续查看内容日历，或回到对话告诉我已确认。";
+      window.scrollTo(0,document.body.scrollHeight);
+    });
+    render();
+  </script>
+</body>
+</html>
