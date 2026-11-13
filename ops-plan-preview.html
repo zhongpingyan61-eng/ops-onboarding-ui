@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>本期制作方案</title>
+  <link rel="stylesheet" href="ops-ui.css">
+</head>
+<body>
+  <main class="wrap">
+    <div class="brand">本期制作方案</div>
+    <p class="lead">实际制作前确认 · 不展示个人信息也不跳过这一步</p>
+    <section class="card">
+      <h1 id="planTitle">第 1 期制作方案</h1>
+      <p class="sub">先看这一份简短、具体的方案。你可以直接改，或在下方写下修改意见。确认后才开始实际制作。</p>
+      <div class="field">
+        <label class="cap" for="episodeTitle">本期题目</label>
+        <input id="episodeTitle" type="text" maxlength="80">
+      </div>
+      <div class="q">
+        <div class="q-label">讲什么</div>
+        <label class="cap" for="corePoint">核心观点</label>
+        <textarea id="corePoint"></textarea>
+        <label class="cap" for="opening" style="margin-top:12px">开场</label>
+        <textarea id="opening"></textarea>
+        <label class="cap" for="structure" style="margin-top:12px">内容结构</label>
+        <textarea id="structure"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-label">怎么做</div>
+        <div class="grid-2">
+          <div class="field"><label class="cap" for="form">内容形式</label><input id="form" type="text"></div>
+          <div class="field"><label class="cap" for="duration">预计时长</label><input id="duration" type="text" placeholder="例如：35 秒"></div>
+        </div>
+        <label class="cap" for="visualStyle">画面与表达风格</label>
+        <textarea id="visualStyle"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-label">用什么</div>
+        <label class="cap" for="assets">素材</label>
+        <textarea id="assets"></textarea>
+        <label class="cap" for="onCamera" style="margin-top:12px">出镜安排</label>
+        <textarea id="onCamera"></textarea>
+        <label class="cap" for="personalDisplay" style="margin-top:12px">个人信息展示</label>
+        <textarea id="personalDisplay" placeholder="例如：本期不展示个人信息；或展示姓名与服务地区。"></textarea>
+        <p class="help">如果选择不展示个人信息，只省去信息补充，仍需要确认这份制作方案。</p>
+      </div>
+      <div class="q">
+        <div class="q-label">需要配合什么</div>
+        <label class="cap" for="needs">必要素材、事实确认或其他明确事项</label>
+        <textarea id="needs"></textarea>
+      </div>
+      <div class="field">
+        <label class="cap" for="revisionNotes">修改意见 <span>如需调整，写在这里</span></label>
+        <textarea id="revisionNotes" placeholder="例如：开场不要先报价格；时长再短一点。"></textarea>
+      </div>
+      <p class="error" id="formError" hidden></p>
+      <button type="button" class="btn btn-primary" id="confirmPlan">确认本期制作方案</button>
+      <button type="button" class="btn btn-secondary" id="saveRevisions">先保存修改意见</button>
+      <p class="footer-note">确认前不会开始实际制作。</p>
+    </section>
+    <section class="card" id="savedCard" hidden>
+      <p class="overview-intro" id="savedIntro">方案已记录</p>
+      <p class="banner-ok" id="savedMessage"></p>
+    </section>
+    <footer class="page-footer">四层确认：长期方向 · 前 5 期做什么 · 本期怎么做 · 成片是否可交付</footer>
+  </main>
+  <script src="ops-collect-client.js"></script>
+  <script>
+    const $=id=>document.getElementById(id);
+    const defaults={
+      title:"第一次买房要先搞清什么",
+      corePoint:"先分清预算、贷款预批和必须看的条件，再去看房。",
+      opening:"很多第一次买房的人一上来就约看房，后面才会发现预算对不上。",
+      structure:"1. 先点出常见误区；2. 给出三步检查清单；3. 用一个本地家庭的情境收束，并说明下一步可以怎么约咨询。",
+      form:"视频",
+      duration:"35 秒",
+      visualStyle:"实景和简洁字卡为主，语气清楚、不推销。不出镜也可以成立。",
+      assets:"贷款预批常见材料的示意清单；不必先提供真实客户资料。",
+      onCamera:"本期可不出现真人出镜，用旁白和画面完成。",
+      personalDisplay:"本期不展示个人信息。",
+      needs:"请确认清单中的三项是否符合你平时对首次购房客户的建议；如有需要替换的说法，直接写在修改意见里。"
+    };
+    try{
+      const topics=JSON.parse(localStorage.getItem("ops-confirmed-topics")||"null");
+      const first=topics&&topics.topics&&topics.topics.find(item=>item.confirmed);
+      if(first){
+        defaults.title=first.title||defaults.title;
+        defaults.corePoint=first.corePoint||defaults.corePoint;
+        defaults.opening=first.opening||defaults.opening;
+        defaults.form=first.format||defaults.form;
+        defaults.assets=first.assets||defaults.assets;
+      }
+    }catch(err){}
+    $("episodeTitle").value=defaults.title;
+    $("planTitle").textContent="第 1 期制作方案";
+    ["corePoint","opening","structure","form","duration","visualStyle","assets","onCamera","personalDisplay","needs"].forEach(id=>{
+      if(defaults[id]) $(id).value=defaults[id];
+    });
+    function collect(confirmed){
+      return {
+        savedAt:new Date().toISOString(),
+        episode:1,
+        title:$("episodeTitle").value.trim(),
+        corePoint:$("corePoint").value.trim(),
+        opening:$("opening").value.trim(),
+        structure:$("structure").value.trim(),
+        form:$("form").value.trim(),
+        duration:$("duration").value.trim(),
+        visualStyle:$("visualStyle").value.trim(),
+        assets:$("assets").value.trim(),
+        onCamera:$("onCamera").value.trim(),
+        personalDisplay:$("personalDisplay").value.trim(),
+        needs:$("needs").value.trim(),
+        revisionNotes:$("revisionNotes").value.trim(),
+        confirmed
+      };
+    }
+    function plaintext(record){
+      return [
+        "【本期制作方案】",
+        "题目："+record.title,
+        "确认状态："+(record.confirmed?"已确认":"未确认，仅保存修改意见"),
+        "讲什么：",
+        "核心观点："+record.corePoint,
+        "开场："+record.opening,
+        "内容结构："+record.structure,
+        "怎么做：",
+        "内容形式："+record.form,
+        "预计时长："+record.duration,
+        "画面与表达风格："+record.visualStyle,
+        "用什么：",
+        "素材："+record.assets,
+        "出镜安排："+record.onCamera,
+        "个人信息展示："+record.personalDisplay,
+        "需要配合什么："+record.needs,
+        record.revisionNotes?"修改意见："+record.revisionNotes:""
+      ].filter(Boolean).join("\n");
+    }
+    async function save(confirmed){
+      const record=collect(confirmed);
+      if(confirmed&&!record.title){$("formError").hidden=false;$("formError").textContent="请先写本期题目。";return}
+      $("formError").hidden=true;
+      const result=window.OpsCollect?await OpsCollect.persist("production_plan",record,plaintext):{ok:false};
+      $("savedCard").hidden=false;
+      if(confirmed){
+        $("savedIntro").textContent="本期制作方案已确认";
+        $("savedMessage").textContent="可以开始实际制作。不展示个人信息只省去了信息补充，没有跳过这次确认。"+(result.ok?"":" 本次已记在本机。");
+      }else{
+        $("savedIntro").textContent="修改意见已记下";
+        $("savedMessage").textContent="方案尚未确认，还不会开始制作。我会按你的意见更新后再给你看。";
+      }
+    }
+    $("confirmPlan").addEventListener("click",()=>save(true));
+    $("saveRevisions").addEventListener("click",()=>save(false));
+  </script>
+</body>
+</html>

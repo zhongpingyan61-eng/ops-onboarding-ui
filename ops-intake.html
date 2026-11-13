@@ -4,182 +4,153 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>运营开号 · 信息收集</title>
-  <style>
-    :root{--surface:#fafafa;--fg:#18181b;--muted:#71717a;--subtle:#92929c;--line:#e4e4e7;--strong:#d4d4d8;--primary:#3072f6;--tint:#f2f6ff}
-    *{box-sizing:border-box}body{margin:0;background:var(--surface);color:var(--fg);font:15px/1.6 "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:0}button,input,textarea,select{font:inherit;letter-spacing:0}button,summary,label.need-option{cursor:pointer}button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}[hidden]{display:none!important}
-    .wrap{max-width:600px;margin:auto;padding:30px 20px 56px}.brand{text-align:center;font-size:18px;font-weight:650;margin-bottom:5px}.lead{text-align:center;font-size:12px;color:var(--subtle);margin:0 0 15px}.preview-tabs{display:flex;justify-content:center;gap:22px;margin-bottom:20px}.preview-tab{border:0;border-bottom:2px solid transparent;background:transparent;padding:6px 0;color:var(--muted);font-size:12px}.preview-tab[aria-selected=true]{color:var(--primary);border-bottom-color:var(--primary)}
-    .panel{display:none;background:#fff;border:1px solid #eeeeef;border-radius:8px;padding:25px 25px 27px;margin-bottom:18px;box-shadow:0 1px 2px #00000006}.panel.show{display:block}h1{margin:0 0 6px;font-size:22px;line-height:1.45;font-weight:650}h2{font-size:14px;font-weight:600;margin:0 0 8px}h1:focus,h1:focus-visible{outline:none}button:focus-visible,summary:focus-visible{outline:3px solid #a8c6ff;outline-offset:3px}.sub{font-size:12px;color:var(--muted);margin:0 0 22px}.field{margin:0 0 16px;min-width:0}.cap,.group-title,legend{display:block;margin:0 0 8px;padding:0;font-size:13px;font-weight:550}.cap span,.group-title span,legend span{font-weight:400;color:var(--subtle);font-size:11px;margin-left:5px}
-    input[type=text],input[type=password],input[type=url],input[type=tel],input[type=email],select,textarea,input[type=file]{width:100%;border:1px solid var(--strong);border-radius:6px;background:#fff;color:var(--fg);font-size:14px;min-width:0}input[type=text],input[type=password],input[type=url],input[type=tel],input[type=email],select{height:42px;padding:0 11px}select{padding-right:25px}textarea{padding:10px 12px;min-height:80px;resize:vertical}input[type=file]{padding:9px 11px;height:auto}input::placeholder,textarea::placeholder{color:#9a9aa3}input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px #3072f622}.help{font-size:11px;color:var(--subtle);line-height:1.6;margin:7px 0 0}
-    .pills{display:flex;flex-wrap:wrap;gap:8px}.pill,.ghost,.btn{border:1px solid var(--strong);background:#fff;color:var(--fg)}.pill{height:34px;padding:0 12px;border-radius:6px;font-size:12px}.pill.on{background:var(--tint);border-color:var(--primary);color:#245fce}.ghost{height:42px;padding:0 12px;border-radius:6px;font-size:12px;white-space:nowrap}.btn{min-height:43px;padding:10px 15px;border-radius:6px;font-size:13px;display:inline-flex;justify-content:center;align-items:center;gap:8px}.btn-primary{width:100%;background:var(--primary);border-color:var(--primary);color:#fff;font-size:14px;margin-top:4px}.btn-primary:hover{background:#2560d0}.btn-secondary:hover{background:#f6f6f7}.link-row{display:flex;gap:8px}.link-row input{flex:1;min-width:0}.detected{display:none;color:#245fce;font-size:11px;margin-top:7px}.detected.show{display:block}
-    .needs-section{border:0;padding:0;margin:0 0 20px;min-width:0}.checks{display:flex;flex-wrap:wrap;gap:8px}.need-option{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:6px;min-height:37px;padding:8px 11px;font-size:12px;color:#52525b;line-height:1.4}.need-option:has(input:checked){border-color:#8fb4fc;background:var(--tint);color:#245fce}.need-option:hover{border-color:#b1c9f9}.need-option input{width:14px;height:14px;flex:0 0 14px;margin:0;accent-color:var(--primary);cursor:pointer}.need-option input:focus{outline:2px solid #8eb4ff;outline-offset:2px;box-shadow:none}
-    .basics{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:19px}.basics .field{margin:0}.coverage{border-top:1px solid var(--line);padding-top:19px}.coverage .checks{gap:15px}.coverage .need-option{border:0;background:transparent;padding:2px 0;min-height:25px;color:var(--muted)}.coverage .need-option:has(input:checked){color:#245fce}#specificArea{margin-top:12px}#customIdentity,#customLanguage{margin-top:8px}
-    .directions{border-top:1px solid var(--line);padding-top:19px}.footer-note{font-size:11px;color:var(--subtle);text-align:center;margin:11px 0 0}.error{font-size:12px;color:#b42318;line-height:1.6;margin:9px 0 12px}.overview-intro{display:flex;align-items:center;gap:8px;font-size:12px;color:#26644c;margin:0 0 20px}.overview-intro:before{content:"";width:6px;height:6px;border-radius:50%;background:#66a582}.summary{margin:0 0 8px}.summary>div{padding:13px 0;border-bottom:1px solid #eeeeef;display:grid;grid-template-columns:85px minmax(0,1fr);gap:15px}.summary dt{font-size:12px;color:var(--muted)}.summary dd{margin:0;font-size:13px;overflow-wrap:anywhere}.next-step{padding:18px 0 6px;font-size:13px;line-height:1.8}.next-step strong{display:block;font-size:13px;margin-bottom:4px}.next-step p{margin:0 0 8px;color:var(--muted);font-size:12px;line-height:1.8}.summary-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}.summary-actions .btn-primary{margin:0}.page-footer{text-align:center;color:#a1a1aa;font-size:11px;margin-top:24px}
-    .material-block{border-top:1px solid var(--line);padding-top:18px;margin-top:6px}.material-tag{display:inline-block;font-size:11px;color:#245fce;background:var(--tint);border-radius:4px;padding:1px 7px;margin-left:6px;vertical-align:middle}.material-tag.optional{color:#8b6421;background:#f8f1e4}.topic-list{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}.topic-pill{border:1px solid var(--line);border-radius:6px;padding:8px 11px;font-size:12px;color:#52525b;background:#fafafa}.file-names{font-size:11px;color:var(--muted);margin:6px 0 0}
-    @media(max-width:480px){.wrap{padding:22px 13px 35px}.panel{padding:22px 18px}.sub{margin-bottom:20px}.checks{gap:7px}.need-option{padding:8px 10px;font-size:12px}.coverage .checks{gap:12px}.basics{gap:12px}h1{font-size:21px}.summary>div{grid-template-columns:70px minmax(0,1fr);gap:12px}}
-    @media(max-width:350px){.basics{grid-template-columns:1fr}.coverage .checks{gap:10px}.need-option{padding:8px 9px}.summary-actions{grid-template-columns:1fr}}
-    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
-    .custom-direction-row{display:flex;gap:8px;margin-top:11px}.custom-direction-row input{flex:1;min-width:0}.custom-direction-row .btn{flex-shrink:0;min-height:42px;padding:8px 13px;margin:0}.direction-preference{margin:16px 0 0}.custom-direction-chip{display:inline-flex;align-items:stretch;max-width:100%;border:1px solid var(--line);border-radius:6px;overflow:hidden}.custom-direction-chip:has(input:checked){border-color:#8fb4fc;background:var(--tint)}.custom-direction-chip .need-option{border:0;border-radius:0;min-width:0;overflow-wrap:anywhere}.remove-direction{display:grid;place-items:center;width:27px;min-width:27px;padding:0;background:transparent;border:0;color:var(--muted);cursor:pointer}.remove-direction:hover{background:#e9edf5;color:var(--fg)}.remove-direction svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}.direction-feedback{font-size:11px;color:var(--muted);margin:6px 0 0}
-    .q{margin:0 0 20px}.q-label{display:block;margin:0 0 8px;font-size:16px;font-weight:650;line-height:1.45}.q-label span{font-weight:400;color:var(--subtle);font-size:12px;margin-left:6px}
-    .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.choice-card{display:flex;align-items:center;gap:10px;min-height:52px;padding:10px 14px;border:1px solid var(--strong);border-radius:8px;font-size:14px;color:var(--fg);background:#fff;line-height:1.4}.choice-card:has(input:checked){border-color:var(--primary);background:var(--tint);color:#245fce}.choice-card input{width:16px;height:16px;flex:0 0 16px;margin:0;accent-color:var(--primary);cursor:pointer}
-    .chip-card{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:8px 12px;border:1px solid var(--strong);border-radius:8px;font-size:13px;color:var(--fg);background:#fff}.chip-card:has(input:checked){border-color:var(--primary);background:var(--tint);color:#245fce}.chip-card input{width:15px;height:15px;flex:0 0 15px;margin:0;accent-color:var(--primary);cursor:pointer}
-    .prefs{border-top:1px solid var(--line);padding-top:4px;margin:6px 0 18px}.prefs>summary{font-size:15px;font-weight:650;padding:10px 0;list-style:none;display:flex;align-items:center;gap:6px}.prefs>summary::-webkit-details-marker{display:none}.prefs>summary:before{content:"";width:0;height:0;border-style:solid;border-width:5px 0 5px 7px;border-color:transparent transparent transparent var(--muted);transform:translateY(1px)}.prefs[open]>summary:before{border-width:7px 5px 0 5px;border-color:var(--muted) transparent transparent transparent}.prefs>summary span{font-weight:400;color:var(--subtle);font-size:12px;margin-left:2px}.prefs .q{margin-top:14px}
-    .coverage-row{display:flex;flex-wrap:wrap;gap:8px}.coverage-row .choice-card{min-height:42px;padding:8px 14px;font-size:13px}
-
-    .banner-warn{background:#f8f1e4;color:#7a5414;border:1px solid #ecd9b0;border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.65;margin:0 0 14px}
-    .copy-box{margin:14px 0 0}.copy-box textarea{min-height:110px;font-size:12px;line-height:1.6}
-    .goal-error{margin:8px 0 0}
-    .copy-ok{color:#26644c;font-size:12px;text-align:left;margin:10px 0 0}
-    @media(max-width:480px){.choice-grid{grid-template-columns:1fr}.q-label{font-size:15px}}
-
-  </style>
+  <title>运营开号 · 前置信息收集</title>
+  <link rel="stylesheet" href="ops-ui.css">
 </head>
 <body>
   <main class="wrap">
-    <noscript><p class="banner-warn">这个表单需要脚本才能提交。请用 Chrome 或 Safari 打开本文件，不要只在聊天预览里点击；预览通常运行不了「完成收集」。完成后会自动复制，粘贴回对话后，方案会在对话里生成。</p></noscript>
-    <p class="banner-warn" id="previewWarn" hidden>当前像是在预览窗口里打开。这里经常点不了「完成收集」，也保存不了。请用电脑的浏览器打开本文件；完成后会自动复制，粘贴回对话即可。</p>
+    <noscript><p class="banner-warn">这个表单需要脚本才能提交。请用电脑的浏览器打开本页。提交后会自动保存，请直接回到原来的对话，不必把结果粘贴回来。</p></noscript>
+    <p class="banner-warn" id="previewWarn" hidden>当前像是在预览窗口里打开，这里常常提交不了。请用电脑的浏览器打开本页。</p>
     <div class="brand">运营开号</div>
-    <p class="lead">界面只负责收集 · 方案在对话里确认</p>
-    <nav class="preview-tabs" role="tablist" aria-label="预览页面">
-      <button type="button" class="preview-tab" id="previewIntake" role="tab" aria-selected="true" aria-controls="p-account" tabindex="0">开号收集</button>
-      <button type="button" class="preview-tab" id="previewMaterials" role="tab" aria-selected="false" aria-controls="p-materials" tabindex="-1">制作材料</button>
-    </nav>
+    <p class="lead">一页集中填写 · 提交后回到原来的对话</p>
 
-    <section class="panel show" id="p-account">
-      <h1>先把账号接进来</h1>
-      <p class="sub">选平台后，用账号密码接入，或粘贴主页链接自动识别。</p>
+    <section class="card" id="p-form">
+      <h1>先把账号和基本需求填在这里</h1>
+      <p class="sub">平台不限，可自行补充。地区、目标和语言先保持简洁；更细的客户、房产、内容方向和制作偏好默认收起，可以后补。</p>
+
       <div class="field">
         <div class="group-title">运营哪个平台</div>
         <div class="pills" id="platforms"></div>
+        <div class="custom-row">
+          <input id="customPlatform" type="text" placeholder="自行补充平台名称，例如：小红书" maxlength="40" aria-label="自行补充平台">
+          <button type="button" class="btn btn-secondary" id="addPlatform">添加</button>
+        </div>
       </div>
       <div class="field">
-        <div class="group-title">怎么接入</div>
-        <div class="pills">
-          <button type="button" class="pill on" data-mode="login">账号和密码</button>
-          <button type="button" class="pill" data-mode="link">粘贴主页链接</button>
-        </div>
+        <label class="cap" for="username">账号</label>
+        <input id="username" type="text" placeholder="例如：demo_realtor 或 @demo_realtor" autocomplete="username">
       </div>
-      <div id="mode-login">
-        <div class="field">
-          <label class="cap" for="username">账号</label>
-          <input id="username" type="text" placeholder="请输入账号">
+      <div class="field">
+        <label class="cap" for="homeUrl">主页链接 <span>和账号填一项即可</span></label>
+        <div class="link-row">
+          <input id="homeUrl" type="url" placeholder="粘贴主页链接">
+          <button type="button" class="ghost" id="pasteBtn">粘贴</button>
         </div>
-        <div class="field">
-          <label class="cap" for="password">密码</label>
-          <input id="password" type="password" placeholder="请输入密码">
-          <p class="help">密码只保存在本地用户库，不会出现在对话里。</p>
-        </div>
+        <div class="detected" id="detected"></div>
       </div>
-      <div id="mode-link" style="display:none;">
-        <div class="field">
-          <label class="cap" for="homeUrl">主页链接</label>
-          <div class="link-row">
-            <input id="homeUrl" type="url" placeholder="粘贴 Instagram 或主页链接">
-            <button type="button" class="ghost" id="pasteBtn">粘贴</button>
+      <div class="field">
+        <label class="cap" for="accountPassword">密码</label>
+        <input id="accountPassword" type="password" placeholder="账号登录密码" autocomplete="current-password">
+        <p class="help">密码会单独安全保存，不会进入普通档案、本地资料库或对话。若本地收集服务没有运行，密码不会被保存。</p>
+      </div>
+
+      <div class="q">
+        <label class="q-label" for="identity">你的身份</label>
+        <select id="identity"><option>房产经纪人</option><option>房产团队</option><option>保险顾问</option><option>理财顾问</option><option>律师</option><option>健身教练</option><option>其他</option></select>
+        <input id="customIdentity" type="text" aria-label="其他身份" placeholder="填写身份（选填）" maxlength="60" hidden style="margin-top:8px">
+      </div>
+      <div class="q">
+        <label class="q-label" for="serviceArea">你主要在哪里服务客户？ <span>可暂不填写</span></label>
+        <input id="serviceArea" type="text" placeholder="例如：Riverside, CA 或 Ontario" maxlength="120">
+      </div>
+      <div class="q">
+        <div class="q-label" id="goalLabel">现在最希望得到什么？</div>
+        <div class="choice-grid" id="goals" role="radiogroup" aria-labelledby="goalLabel"></div>
+        <p class="error" id="goalError" role="alert" hidden></p>
+      </div>
+      <div class="q">
+        <label class="q-label" for="language">内容语言</label>
+        <select id="language"><option>英语</option><option>西班牙语</option><option>中英双语</option><option>暂未确定</option><option>其他</option></select>
+        <input id="customLanguage" type="text" aria-label="其他内容语言" placeholder="填写语言（选填）" maxlength="40" hidden style="margin-top:8px">
+      </div>
+      <div class="q">
+        <label class="q-label" for="needsNote">还有什么要求？ <span>选填</span></label>
+        <textarea id="needsNote" placeholder="例如：多讲本地生活，不想出镜；希望吸引搬来这里的家庭。" maxlength="800"></textarea>
+      </div>
+
+      <details class="fold" id="foldAudience">
+        <summary>客户 <span>选填，可多选</span></summary>
+        <div class="q" style="margin-top:10px">
+          <div class="checks" id="audiences"></div>
+        </div>
+      </details>
+      <details class="fold" id="foldProperty">
+        <summary>房产 <span>选填</span></summary>
+        <div class="q" style="margin-top:10px" id="focusBlock">
+          <div class="cap">房产侧重 <span>可多选</span></div>
+          <div class="checks" id="focuses"></div>
+        </div>
+        <div class="q" id="zipBlock">
+          <label class="cap" for="serviceZips">服务邮编 <span>选填</span></label>
+          <input id="serviceZips" type="text" placeholder="例如：92501, 92503" maxlength="120">
+          <p class="help">ZIP / 加拿大邮编，最多 10 个，以逗号分隔。</p>
+        </div>
+      </details>
+      <details class="fold" id="foldDirections">
+        <summary>内容方向 <span>选填，可组合，也可自行补充</span></summary>
+        <div class="q" style="margin-top:10px">
+          <div class="checks" id="directions"></div>
+          <label class="cap" for="customDirection" style="margin-top:14px">补充方向</label>
+          <div class="custom-row">
+            <input id="customDirection" type="text" placeholder="例如：海外安家、建筑设计" maxlength="80">
+            <button class="btn btn-secondary" id="addDirection" type="button">添加</button>
           </div>
-          <div class="detected" id="detected"></div>
-          <p class="help">系统根据链接自动识别平台，不必再选一次。</p>
+          <p class="help" id="directionFeedback" role="status" hidden></p>
         </div>
-        <div class="field">
-          <label class="cap" for="authPass">授权密码</label>
-          <input id="authPass" type="password" placeholder="请输入授权密码">
-          <p class="help">密码只保存在本地用户库，不会出现在对话里。</p>
+        <div class="q">
+          <div class="cap">内容覆盖范围</div>
+          <div class="checks" id="coverageRow">
+            <label class="choice"><input type="radio" name="coverage" value="全球不限" checked>全球不限</label>
+            <label class="choice"><input type="radio" name="coverage" value="指定国家或地区">指定国家或地区</label>
+            <label class="choice"><input type="radio" name="coverage" value="暂未确定">暂未确定</label>
+          </div>
+          <input id="specificArea" type="text" placeholder="国家、地区或城市，范围可宽可细" aria-label="指定内容覆盖国家或地区" maxlength="100" hidden style="margin-top:10px">
+          <p class="help">指内容传播范围，和上面的服务地区不同。</p>
         </div>
-      </div>
-      <p class="error" id="accountError" role="alert" hidden></p>
-      <button type="button" class="btn btn-primary" id="toPath">继续填写需求</button>
-      <button type="button" class="btn btn-secondary" id="skipAccount" style="width:100%;margin-top:8px">先跳过账号，直接填需求</button>
+      </details>
+      <details class="fold" id="foldPrefs">
+        <summary>制作偏好 <span>选填</span></summary>
+        <div class="q" style="margin-top:10px">
+          <label class="cap" for="stylePref">表达风格</label>
+          <input id="stylePref" type="text" placeholder="例如：专业、清楚，不要过于推销" maxlength="120">
+        </div>
+        <div class="q">
+          <div class="cap" id="onCameraLabel">出镜安排</div>
+          <div class="checks" role="radiogroup" aria-labelledby="onCameraLabel">
+            <label class="chip"><input type="radio" name="onCamera" value="可出镜">可出镜</label>
+            <label class="chip"><input type="radio" name="onCamera" value="不出镜">不出镜</label>
+            <label class="chip"><input type="radio" name="onCamera" value="视内容而定" checked>视内容而定</label>
+          </div>
+        </div>
+        <div class="q">
+          <label class="cap" for="visualPref">画面偏好</label>
+          <input id="visualPref" type="text" placeholder="例如：实景为主，少用动画字卡" maxlength="120">
+        </div>
+        <div class="q">
+          <label class="cap" for="cadence">更新节奏</label>
+          <select id="cadence">
+            <option value="暂未确定">暂未确定，方案里再建议</option>
+            <option value="每周1期">每周 1 期</option>
+            <option value="每周2期">每周 2 期</option>
+            <option value="每周3期">每周 3 期</option>
+            <option value="其他">其他</option>
+          </select>
+          <input id="customCadence" type="text" placeholder="例如：每两周 1 期" maxlength="40" hidden style="margin-top:8px">
+        </div>
+      </details>
+
+      <p class="error" id="formError" role="alert" hidden></p>
+      <button class="btn btn-primary" type="button" id="finishNeeds">完成收集</button>
+      <p class="footer-note">提交后会自动保存。请回到原来的对话，我会自行读取这些资料，不必把结果粘贴回来。</p>
     </section>
 
-    <section class="panel" id="p-needs" aria-labelledby="needsTitle">
-      <h1 id="needsTitle" tabindex="-1">你的运营需求</h1>
-      <p class="sub">先确认基础信息和你想干什么，写入用户库。更细的偏好可以后补，方案会在对话里以文档给你看。</p>
-      <form id="needsForm" novalidate>
-        <div class="q">
-          <label class="q-label" for="identity">你的身份</label>
-          <select id="identity"><option>房产经纪人</option><option>房产团队</option><option>保险顾问</option><option>理财顾问</option><option>律师</option><option>健身教练</option><option>其他</option></select>
-          <input id="customIdentity" type="text" aria-label="其他身份" placeholder="填写身份（选填）" maxlength="60" hidden>
-        </div>
-        <div class="q">
-          <label class="q-label" for="serviceArea">你主要在哪里服务客户？ <span>可暂不填写</span></label>
-          <input id="serviceArea" type="text" placeholder="例如：Austin, TX 或 Ontario" maxlength="120">
-        </div>
-        <div class="q">
-          <div class="q-label" id="goalLabel">现在最希望得到什么？</div>
-          <div class="choice-grid" id="goals" role="radiogroup" aria-labelledby="goalLabel"></div>
-          <p class="error goal-error" id="goalError" role="alert" hidden></p>
-        </div>
-        <div class="q">
-          <label class="q-label" for="language">内容语言</label>
-          <select id="language"><option>英语</option><option>西班牙语</option><option>中英双语</option><option>暂未确定</option><option>其他</option></select>
-          <input id="customLanguage" type="text" aria-label="其他内容语言" placeholder="填写语言（选填）" maxlength="40" hidden>
-        </div>
-        <div class="q" id="displayProfile">
-          <div class="q-label">对外展示信息</div>
-          <p class="help" style="margin:0 0 14px">后续做房源展示等内容时，会自动同步这里的信息，不必再填一遍。只用于内容展示，不是登录账号。</p>
-          <div class="basics">
-            <div class="field"><label class="cap" for="displayName">姓名</label><input id="displayName" type="text" placeholder="例如：Sarah Chen" maxlength="80"></div>
-            <div class="field"><label class="cap" for="displayTitle">头衔 <span>选填</span></label><input id="displayTitle" type="text" placeholder="例如：Realtor" maxlength="80"></div>
-          </div>
-          <div class="basics">
-            <div class="field"><label class="cap" for="displayPhone">电话</label><input id="displayPhone" type="tel" placeholder="例如：(512) 555-0100" maxlength="40"></div>
-            <div class="field"><label class="cap" for="displayEmail">邮箱 <span>选填</span></label><input id="displayEmail" type="email" placeholder="例如：sarah@example.com" maxlength="80"></div>
-          </div>
-          <div class="field" style="margin:0">
-            <label class="cap">头像 <span>选填</span></label>
-            <input id="displayPhoto" type="file" accept="image/*" hidden>
-            <button type="button" class="btn btn-secondary" id="pickDisplayPhoto" style="width:auto;margin:0">选择照片</button>
-            <p class="file-names" id="displayPhotoName">还没有选择头像</p>
-            <p class="help">头像只记录文件名；若要用于成片，请把头像一并发回对话。</p>
-          </div>
-        </div>
-        <div class="q">
-          <label class="q-label" for="needsNote">还有什么要求？ <span>选填</span></label>
-          <textarea id="needsNote" placeholder="例如：多讲本地生活，不想出镜；希望吸引搬来这里的家庭。" maxlength="800"></textarea>
-        </div>
-        <details class="prefs" id="prefs">
-          <summary>客户、房产与内容偏好 <span>选填</span></summary>
-          <div class="q" id="audienceBlock">
-            <div class="q-label">主要服务哪些客户？ <span>选填，可多选</span></div>
-            <div class="checks" id="audiences"></div>
-          </div>
-          <div class="q" id="focusBlock">
-            <div class="q-label">房产侧重 <span>选填，可多选</span></div>
-            <div class="checks" id="focuses"></div>
-          </div>
-          <div class="q" id="zipBlock">
-            <label class="q-label" for="serviceZips">服务邮编 <span>选填</span></label>
-            <input id="serviceZips" type="text" placeholder="例如：94043, M5V 2T6" maxlength="120">
-            <p class="help">ZIP / 加拿大邮编，最多 10 个，以逗号分隔。</p>
-          </div>
-          <div class="q">
-            <div class="q-label">目标内容方向 <span>可组合，也可自行补充</span></div>
-            <div class="checks" id="directions"></div>
-            <label class="cap" for="customDirection" style="margin-top:14px">补充方向</label>
-            <div class="custom-direction-row"><input id="customDirection" type="text" placeholder="例如：海外安家、建筑设计" maxlength="80" aria-describedby="directionFeedback"><button class="btn btn-secondary" id="addDirection" type="button">添加</button></div>
-            <p class="direction-feedback" id="directionFeedback" role="status" hidden></p>
-          </div>
-          <div class="q">
-            <div class="q-label">内容覆盖范围</div>
-            <div class="coverage-row">
-              <label class="choice-card"><input type="radio" name="coverage" value="全球不限" checked>全球不限</label>
-              <label class="choice-card"><input type="radio" name="coverage" value="指定国家或地区">指定国家或地区</label>
-              <label class="choice-card"><input type="radio" name="coverage" value="暂未确定">暂未确定</label>
-            </div>
-            <input id="specificArea" type="text" placeholder="国家、地区或城市，范围可宽可细" aria-label="指定内容覆盖国家或地区" maxlength="100" hidden style="margin-top:10px">
-            <p class="help">指内容传播范围，和上面的服务地区不同；具体服务地区也可等方案里再确认。</p>
-          </div>
-        </details>
-        <p class="error" id="needsError" role="alert" hidden></p>
-        <button class="btn btn-primary" type="button" id="finishNeeds">完成收集</button>
-        <p class="footer-note">收集完成后会自动复制结果，粘贴回对话即可查看运营方案文档。</p>
-      </form>
-    </section>
-
-    <section class="panel" id="p-library" aria-labelledby="libraryTitle">
-      <h1 id="libraryTitle" tabindex="-1">信息已收入用户库</h1>
-      <p class="overview-intro">开号收集完成 · 方案不在这里生成</p>
+    <section class="card" id="p-done" hidden>
+      <h1 id="doneTitle" tabindex="-1">信息已保存</h1>
+      <p class="overview-intro" id="doneIntro">收集完成 · 请回到原来的对话</p>
+      <div class="banner-ok" id="doneMessage"></div>
+      <p class="banner-warn" id="passwordWarn" hidden></p>
       <dl class="summary">
+        <div><dt>运营平台</dt><dd id="summaryPlatform"></dd></div>
         <div><dt>运营账号</dt><dd id="summaryAccount"></dd></div>
         <div><dt>身份</dt><dd id="summaryIdentity"></dd></div>
         <div id="summaryAreaRow"><dt>服务地区</dt><dd id="summaryArea"></dd></div>
@@ -189,131 +160,89 @@
         <div id="summaryAudienceRow" hidden><dt>服务客户</dt><dd id="summaryAudience"></dd></div>
         <div id="summaryFocusRow" hidden><dt>房产侧重</dt><dd id="summaryFocus"></dd></div>
         <div id="summaryZipRow" hidden><dt>服务邮编</dt><dd id="summaryZips"></dd></div>
-        <div id="summaryDisplayNameRow" hidden><dt>对外姓名</dt><dd id="summaryDisplayName"></dd></div>
-        <div id="summaryDisplayTitleRow" hidden><dt>对外头衔</dt><dd id="summaryDisplayTitle"></dd></div>
-        <div id="summaryDisplayPhoneRow" hidden><dt>对外电话</dt><dd id="summaryDisplayPhone"></dd></div>
-        <div id="summaryDisplayEmailRow" hidden><dt>对外邮箱</dt><dd id="summaryDisplayEmail"></dd></div>
-        <div id="summaryDisplayPhotoRow" hidden><dt>对外头像</dt><dd id="summaryDisplayPhoto"></dd></div>
-        <div><dt>目标方向</dt><dd id="summaryDirections"></dd></div>
-        <div><dt>传播范围</dt><dd id="summaryCoverage"></dd></div>
+        <div id="summaryDirectionRow" hidden><dt>内容方向</dt><dd id="summaryDirections"></dd></div>
+        <div id="summaryCoverageRow" hidden><dt>传播范围</dt><dd id="summaryCoverage"></dd></div>
+        <div id="summaryPrefRow" hidden><dt>制作偏好</dt><dd id="summaryPrefs"></dd></div>
+        <div id="summaryCadenceRow" hidden><dt>更新节奏</dt><dd id="summaryCadence"></dd></div>
+        <div id="summaryPasswordRow"><dt>密码</dt><dd id="summaryPassword"></dd></div>
       </dl>
-      <p class="copy-ok" id="copyStatus" role="status">正在自动复制收集结果…</p>
-      <p class="footer-note" style="text-align:left;margin:8px 0 12px">界面只保存这些信息。收集完成后会自动复制，粘贴回对话即可；运营方案会在对话里生成，不在这个页面展示。</p>
-      <div class="copy-box">
-        <label class="cap" for="recordExport">收集结果 <span>已准备好粘贴</span></label>
-        <textarea id="recordExport" readonly></textarea>
-        <button type="button" class="btn btn-secondary" id="copyRecord" style="width:100%;margin-top:8px">再复制一次</button>
-      </div>
-      <div class="summary-actions">
-        <button class="btn btn-secondary" id="editNeeds" type="button">修改需求</button>
-        <button class="btn btn-secondary" id="editAccount" type="button">修改账号</button>
-      </div>
+      <button class="btn btn-primary" type="button" id="closePage">关闭此页，返回对话</button>
+      <button class="btn btn-secondary" type="button" id="editAgain">修改后再提交</button>
     </section>
 
-    <section class="panel" id="p-materials" aria-labelledby="materialsTitle">
-      <h1 id="materialsTitle" tabindex="-1">补充制作材料</h1>
-      <p class="sub">方案已确认，并选定了先做的内容。把需要你提供的材料放在这里；没有的可以先空着，能后补的会在制作时再问。</p>
-      <p class="cap">这次先做的内容</p>
-      <div class="topic-list" id="selectedTopics">
-        <span class="topic-pill">买房流程 <span class="material-tag optional">可先做</span></span>
-        <span class="topic-pill">房源展示 <span class="material-tag">需材料</span></span>
-      </div>
-      <form id="materialsForm" novalidate>
-        <div class="material-block">
-          <h2>房源展示</h2>
-          <p class="help" style="margin:0 0 14px">有房源时再上照片和基本信息。没有可先跳过，先做「买房流程」。</p>
-          <div class="field">
-            <label class="cap" for="listingNote">房源说明 <span>选填</span></label>
-            <textarea id="listingNote" placeholder="例如：两居，靠近学校，适合首次置业家庭。价格和地址可后补。" maxlength="800"></textarea>
-          </div>
-          <div class="basics">
-            <div class="field"><label class="cap" for="listingArea">区域或社区 <span>选填</span></label><input id="listingArea" type="text" placeholder="例如：Brickell" maxlength="80"></div>
-            <div class="field"><label class="cap" for="listingPrice">价格或区间 <span>选填</span></label><input id="listingPrice" type="text" placeholder="例如：$450,000" maxlength="40"></div>
-          </div>
-          <div class="field">
-            <label class="cap">房源照片 <span>可多张，选填</span></label>
-            <input id="listingPhotos" type="file" accept="image/*" multiple hidden>
-            <button type="button" class="btn btn-secondary" id="pickPhotos" style="width:auto;margin:0">选择照片</button>
-            <p class="file-names" id="listingPhotoNames">还没有选择照片</p>
-          </div>
-        </div>
-        <div class="material-block">
-          <h2>其他展示资料</h2>
-          <div class="field">
-            <label class="cap" for="extraMaterials">补充说明、链接或出镜要求 <span>选填</span></label>
-            <textarea id="extraMaterials" placeholder="例如：可使用团队照片，不要露出客户正脸；补充资料可后传。" maxlength="800"></textarea>
-          </div>
-          <div class="field">
-            <label class="cap" for="ownTopics">你还确定要先做的内容 <span>选填，有则以你为主</span></label>
-            <textarea id="ownTopics" placeholder="如果你已经想好要做哪几条，写在这里，会优先按你的选择制作。" maxlength="400"></textarea>
-          </div>
-        </div>
-        <p class="error" id="materialsError" role="alert" hidden></p>
-        <button class="btn btn-primary" type="submit">提交材料，开始制作</button>
-        <button class="btn btn-secondary" id="skipMaterials" type="button" style="width:100%;margin-top:8px">这些先没有，先按现有材料制作</button>
-        <p class="footer-note">此预览不执行真实生产。提交后仅演示「收集完毕，开始生产」。</p>
-      </form>
-    </section>
-
-    <section class="panel" id="p-produce" aria-labelledby="produceTitle">
-      <h1 id="produceTitle" tabindex="-1">可以开始生产了</h1>
-      <p class="overview-intro">材料已收齐 · 接下来交付产物</p>
-      <div class="next-step">
-        <strong>生产安排</strong>
-        <p id="produceSummary">将按已确认方案和选定内容开始制作，完成后在对话里交付。</p>
-      </div>
-      <button class="btn btn-secondary" id="backMaterials" type="button" style="width:100%">返回修改材料</button>
-    </section>
-
-    <footer class="page-footer">方案确认在对话中完成 · 账号授权、付费与公开发布分别确认</footer>
+    <footer class="page-footer">长期方案会在对话里提出 · 个人信息展示等到每期执行时再确认</footer>
   </main>
   <script src="ops-collect-client.js"></script>
-<script>
+  <script>
     const $=id=>document.getElementById(id);
-    const LIBRARY_KEY="ops-user-library";
-    const state={platform:"Instagram",mode:"login",goal:"",audiences:new Set(),focuses:new Set(),directions:new Set(),customDirections:[],nextDirectionId:1,record:null};
+    const state={
+      platform:"Instagram",
+      platforms:["Instagram","TikTok","YouTube","X"],
+      goal:"",
+      audiences:new Set(),
+      focuses:new Set(),
+      directions:new Set(),
+      customDirections:[],
+      nextDirectionId:1,
+      record:null,
+      persistResult:null
+    };
     const goalItems=["更多客户咨询","更多人认识我","保持账号更新","帮我推荐"];
     const audienceItems=["首次购房者","换房客户","投资者","卖家"];
     const focusItems=["住宅买卖","豪宅","投资物业","商业地产"];
-    const directionItems=[{id:"knowledge",real:"买卖房知识",general:"专业知识"},{id:"market",real:"市场解读",general:"行业资讯"},{id:"local",real:"本地生活",general:"本地生活"},{id:"listing",real:"房源展示",general:"作品展示"},{id:"cases",real:"成交故事",general:"案例故事"},{id:"intro",real:"个人与团队介绍",general:"个人介绍"}];
-    const platforms=["Instagram","TikTok","YouTube","X"];
-    const intakeViews=new Set(["p-account","p-needs","p-library"]);
-    function setView(id){
-      document.querySelectorAll(".panel").forEach(panel=>panel.classList.toggle("show",panel.id===id));
-      const intake=intakeViews.has(id);
-      $("previewIntake").setAttribute("aria-selected",String(intake));$("previewIntake").tabIndex=intake?0:-1;
-      $("previewMaterials").setAttribute("aria-selected",String(!intake));$("previewMaterials").tabIndex=intake?-1:0;
-      window.scrollTo(0,0);const heading=$(id).querySelector("h1");heading.tabIndex=-1;heading.focus({preventScroll:true});
-    }
+    const directionItems=[
+      {id:"knowledge",real:"买卖房知识",general:"专业知识"},
+      {id:"market",real:"市场解读",general:"行业资讯"},
+      {id:"local",real:"本地生活",general:"本地生活"},
+      {id:"listing",real:"房源展示",general:"作品展示"},
+      {id:"cases",real:"成交故事",general:"案例故事"},
+      {id:"intro",real:"个人与团队介绍",general:"个人介绍"}
+    ];
+    const hostHints={
+      Instagram:["instagram.com"],
+      TikTok:["tiktok.com"],
+      YouTube:["youtube.com","youtu.be"],
+      X:["x.com","twitter.com"]
+    };
+
+    function isRealtor(){return ["房产经纪人","房产团队"].includes($("identity").value)}
     function renderPlatforms(){
       $("platforms").replaceChildren();
-      platforms.forEach(platform=>{
-        const button=document.createElement("button");button.type="button";button.className="pill"+(state.platform===platform?" on":"");button.textContent=platform;button.setAttribute("aria-pressed",String(state.platform===platform));
-        button.addEventListener("click",()=>{state.platform=platform;renderPlatforms()});$("platforms").append(button);
+      state.platforms.forEach(platform=>{
+        const button=document.createElement("button");
+        button.type="button";
+        button.className="pill"+(state.platform===platform?" on":"");
+        button.textContent=platform;
+        button.setAttribute("aria-pressed",String(state.platform===platform));
+        button.addEventListener("click",()=>{state.platform=platform;renderPlatforms()});
+        $("platforms").append(button);
       });
     }
-    function isRealtor(){return ["房产经纪人","房产团队"].includes($("identity").value)}
+    function addCustomPlatform(){
+      const name=$("customPlatform").value.trim();
+      if(!name)return;
+      if(!state.platforms.some(item=>item.toLowerCase()===name.toLowerCase())) state.platforms.push(name);
+      state.platform=state.platforms.find(item=>item.toLowerCase()===name.toLowerCase())||name;
+      $("customPlatform").value="";
+      renderPlatforms();
+    }
     function renderGoals(){
       $("goals").replaceChildren();
       goalItems.forEach(goal=>{
-        const label=document.createElement("label");label.className="choice-card";
+        const label=document.createElement("label");label.className="choice";
         const input=document.createElement("input");input.type="radio";input.name="goal";input.value=goal;input.checked=state.goal===goal;
-        input.addEventListener("change",()=>{state.goal=goal;showNeedsError("",null)});
+        input.addEventListener("change",()=>{state.goal=goal;showError("")});
         label.append(input,document.createTextNode(goal));$("goals").append(label);
       });
     }
     function renderChipGroup(id,items,store){
       $(id).replaceChildren();
       items.forEach(item=>{
-        const label=document.createElement("label");label.className="chip-card";
+        const label=document.createElement("label");label.className="chip";
         const input=document.createElement("input");input.type="checkbox";input.value=item;input.checked=store.has(item);
         input.addEventListener("change",()=>{if(input.checked)store.add(item);else store.delete(item)});
         label.append(input,document.createTextNode(item));$(id).append(label);
       });
-    }
-    function syncRealtorFields(){
-      const show=isRealtor();
-      ["audienceBlock","focusBlock","zipBlock"].forEach(id=>$(id).hidden=!show);
     }
     function directionLabel(item){return item.custom?item.title:isRealtor()?item.real:item.general}
     function allDirections(){return directionItems.concat(state.customDirections)}
@@ -327,56 +256,65 @@
     function renderDirections(){
       $("directions").replaceChildren();
       allDirections().forEach(item=>{
-        const label=document.createElement("label");label.className="chip-card";
+        const label=document.createElement("label");label.className="chip";
         const input=document.createElement("input");input.type="checkbox";input.value=item.id;input.checked=state.directions.has(item.id);
         input.addEventListener("change",()=>{if(input.checked)state.directions.add(item.id);else state.directions.delete(item.id)});
         label.append(input,document.createTextNode(directionLabel(item)));
-        if(item.custom){
-          const chip=document.createElement("span");chip.className="custom-direction-chip";
-          const remove=document.createElement("button");remove.type="button";remove.className="remove-direction";remove.title="移除方向："+item.title;remove.setAttribute("aria-label",remove.title);
-          const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");svg.setAttribute("viewBox","0 0 24 24");svg.setAttribute("aria-hidden","true");["M18 6 6 18","m6 6 12 12"].forEach(d=>{const path=document.createElementNS(svg.namespaceURI,"path");path.setAttribute("d",d);svg.append(path)});remove.append(svg);
-          remove.addEventListener("click",()=>{state.customDirections=state.customDirections.filter(other=>other.id!==item.id);state.directions.delete(item.id);renderDirections();$("directionFeedback").textContent="已移除方向："+item.title;$("directionFeedback").hidden=false;$("customDirection").focus()});
-          chip.append(label,remove);$("directions").append(chip);
-        }else $("directions").append(label);
+        $("directions").append(label);
       });
     }
     function detectPlatform(value){
-      try{const host=new URL(value).hostname.toLowerCase().replace(/^www\./,"");return platforms.find(platform=>({Instagram:["instagram.com"],TikTok:["tiktok.com"],YouTube:["youtube.com","youtu.be"],X:["x.com","twitter.com"]}[platform]).some(domain=>host===domain||host.endsWith("."+domain)))||""}catch(error){return ""}
+      try{
+        const host=new URL(value).hostname.toLowerCase().replace(/^www\./,"");
+        return state.platforms.find(platform=>{
+          const domains=hostHints[platform]||[platform.toLowerCase().replace(/\s+/g,"")+".com"];
+          return domains.some(domain=>host===domain||host.endsWith("."+domain));
+        })||"";
+      }catch(error){return ""}
     }
-    function selectedChips(store){return [...store].join("、")}
-    function parseZips(value){
-      return value.split(/[,，、\s]+/).map(item=>item.trim()).filter(Boolean);
+    function parseZips(value){return value.split(/[,，、\s]+/).map(item=>item.trim()).filter(Boolean)}
+    function accountLabel(){
+      const handle=$("username").value.trim();
+      const homeUrl=$("homeUrl").value.trim();
+      const parts=[handle,homeUrl].filter(Boolean);
+      return parts.length?state.platform+" · "+parts.join(" · "):"尚未填写，稍后接入";
+    }
+    function productionPrefs(){
+      const style=$("stylePref").value.trim();
+      const camera=(document.querySelector("[name=onCamera]:checked")||{}).value||"";
+      const visual=$("visualPref").value.trim();
+      return [style&&("表达风格："+style),camera&&("出镜："+camera),visual&&("画面："+visual)].filter(Boolean).join("；");
+    }
+    function cadenceValue(){
+      const value=$("cadence").value;
+      if(value==="其他") return $("customCadence").value.trim()||"其他节奏，待确认";
+      return value;
     }
     function collectRecord(){
       const coverage=document.querySelector("[name=coverage]:checked").value;
-      const account=state.mode==="login"?$("username").value.trim():$("homeUrl").value.trim();
-      const note=$("needsNote").value.trim();
-      const area=$("serviceArea").value.trim();
-      const zips=isRealtor()?parseZips($("serviceZips").value):[];
       return {
         savedAt:new Date().toISOString(),
         platform:state.platform,
-        mode:state.mode,
-        account:account?state.platform+" · "+account+"（待授权）":"尚未填写，稍后接入",
+        account:accountLabel(),
+        password:$("accountPassword").value,
         goals:state.goal||"未填写",
-        identity:$("identity").value==="其他"?$("customIdentity").value.trim()||"其他身份，待确认":$("identity").value,
-        area:area||"暂未填写，方案里再判断",
+        identity:$("identity").value==="其他"?($("customIdentity").value.trim()||"其他身份，待确认"):$("identity").value,
+        area:$("serviceArea").value.trim()||"暂未填写，方案里再判断",
         coverage:coverage==="指定国家或地区"?$("specificArea").value.trim():coverage,
-        language:$("language").value==="其他"?$("customLanguage").value.trim()||"其他语言，待确认":$("language").value,
-        audiences:isRealtor()?selectedChips(state.audiences):"",
-        focuses:isRealtor()?selectedChips(state.focuses):"",
-        zips:zips.join("、"),
-        directions:allDirections().filter(item=>state.directions.has(item.id)).map(directionLabel).join(" ＋ ")||"暂未指定，方案中再建议",
-        note,
-        displayName:$("displayName").value.trim(),
-        displayTitle:$("displayTitle").value.trim(),
-        displayPhone:$("displayPhone").value.trim(),
-        displayEmail:$("displayEmail").value.trim(),
-        displayPhoto:$("displayPhoto").files[0]?$("displayPhoto").files[0].name:""
+        language:$("language").value==="其他"?($("customLanguage").value.trim()||"其他语言，待确认"):$("language").value,
+        audiences:selectedChips(state.audiences),
+        focuses:selectedChips(state.focuses),
+        zips:parseZips($("serviceZips").value).join("、"),
+        directions:allDirections().filter(item=>state.directions.has(item.id)).map(directionLabel).join(" ＋ ")||"",
+        note:$("needsNote").value.trim(),
+        productionPrefs:productionPrefs(),
+        cadence:cadenceValue()
       };
     }
+    function selectedChips(store){return [...store].join("、")}
     function recordPlaintext(record){
       const rows=[
+        ["运营平台",record.platform],
         ["运营账号",record.account],
         ["身份",record.identity],
         ["服务地区",record.area],
@@ -388,84 +326,54 @@
         ["服务邮编",record.zips],
         ["目标方向",record.directions],
         ["传播范围",record.coverage],
-        ["对外姓名",record.displayName],
-        ["对外头衔",record.displayTitle],
-        ["对外电话",record.displayPhone],
-        ["对外邮箱",record.displayEmail],
-        ["对外头像",record.displayPhoto]
+        ["制作偏好",record.productionPrefs],
+        ["更新节奏",record.cadence]
       ].filter(row=>row[1]);
-      return "【开号收集结果】\n"+rows.map(row=>row[0]+"："+row[1]).join("\n")+"\n\n请根据以上信息，在对话里出一版运营方案。信息不足请标待验证。";
+      return "【开号收集结果】\n"+rows.map(row=>row[0]+"："+row[1]).join("\n")+"\n\n请根据以上信息，在对话里出一版长期运营方案。信息不足请标待验证。不要把密码写入方案或对话。";
     }
-    function fillExport(record){
-      if($("recordExport")) $("recordExport").value=recordPlaintext(record);
-    }
-    async function autoCopyResult(){
-      const text=($("recordExport")&&$("recordExport").value||"").trim();
-      const status=$("copyStatus");
-      if(!status)return;
-      if(!text){status.textContent="还没有可复制的收集结果。";status.hidden=false;return}
-      try{
-        await navigator.clipboard.writeText(text);
-        status.textContent="已自动复制，请直接粘贴回对话。";
-        status.hidden=false;
-        return;
-      }catch(err){}
-      try{
-        $("recordExport").focus();
-        $("recordExport").select();
-        if(document.execCommand("copy")){
-          status.textContent="已自动复制，请直接粘贴回对话。";
-          status.hidden=false;
-          return;
-        }
-      }catch(err){}
-      status.textContent="这次没能自动复制。已帮你选中文本，按 Command + C（Windows 用 Ctrl + C）后再粘贴回对话。";
-      status.hidden=false;
-    }
-    function showNeedsError(message,field,anchor){
-      $("needsError").textContent=message;$("needsError").hidden=!message;
-      if($("goalError")){
-        const goalMsg=message&&/最希望得到什么/.test(message)?message:"";
-        $("goalError").textContent=goalMsg;$("goalError").hidden=!goalMsg;
-      }
-      const target=anchor||$("needsError");
-      if(message&&target&&target.scrollIntoView) target.scrollIntoView({block:"center",behavior:"smooth"});
+    function showError(message,field){
+      $("formError").textContent=message;$("formError").hidden=!message;
+      const goalMsg=message&&/最希望得到什么/.test(message)?message:"";
+      $("goalError").textContent=goalMsg;$("goalError").hidden=!goalMsg;
+      if(message&&(field||$("formError")).scrollIntoView) (field||$("formError")).scrollIntoView({block:"center",behavior:"smooth"});
       if(message&&field&&field.focus) try{field.focus({preventScroll:true})}catch(err){field.focus()}
     }
-    function finishCollection(){
-      const coverageEl=document.querySelector("[name=coverage]:checked");
-      const coverage=coverageEl?coverageEl.value:"";let error="";let field;let anchor;
-      try{
-        if(!state.goal){error="请选择现在最希望得到什么。";field=$("goals").querySelector("input");anchor=$("goalError")||$("goals")}
-        else if(coverage==="指定国家或地区"&&!$("specificArea").value.trim()){error="请填写希望覆盖的国家、地区或城市。";field=$("specificArea");field.setAttribute("aria-invalid","true")}
-        else if(isRealtor()&&parseZips($("serviceZips").value).length>10){error="服务邮编最多填写 10 个。";field=$("serviceZips");field.setAttribute("aria-invalid","true")}
-        else if(!$("displayName").value.trim()){error="请填写对外展示用的姓名，后续房源内容会自动同步。";field=$("displayName");field.setAttribute("aria-invalid","true")}
-        else if($("displayEmail").value.trim()&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($("displayEmail").value.trim())){error="对外邮箱格式看起来不正确，可以改一下或先留空。";field=$("displayEmail");field.setAttribute("aria-invalid","true")}
-        if(error){showNeedsError(error,field,anchor);return false}
-        showNeedsError("",null);
-        addCustomDirection();
-        const record=collectRecord();
-        saveLibrary(record);
-        if(window.OpsCollect) OpsCollect.persist("intake",record,recordPlaintext);
-        renderLibrary(record);
-        setView("p-library");
-        autoCopyResult();
-        return true;
-      }catch(err){
-        showNeedsError("保存时出错了："+(err&&err.message?err.message:"请再试一次。"),null);
-        console.error(err);
-        return false;
-      }
+    function setDoneView(show){
+      $("p-form").hidden=show;
+      $("p-done").hidden=!show;
+      if(show){window.scrollTo(0,0);$("doneTitle").focus({preventScroll:true})}
     }
-    function renderLibrary(record){
+    function renderDone(record,result){
       state.record=record;
-      $("summaryAccount").textContent=record.account;
-      $("summaryGoals").textContent=record.goals;
-      $("summaryIdentity").textContent=record.identity;
+      state.persistResult=result;
+      const saved=result&&result.ok;
+      $("doneTitle").textContent=saved||result&&result.reason==="preview"?"信息已保存":"信息已记下";
+      $("doneIntro").textContent=(saved?"已写入本地收集服务":"已保存在本机")+" · 请回到原来的对话";
+      if(result&&result.reason==="preview"){
+        $("doneMessage").textContent="这是预览状态，不会写入真实档案，也不会保存密码。正式收集请用浏览器打开本页并提交。";
+      }else if(saved){
+        $("doneMessage").textContent="信息已自动保存。请直接关掉这一页，回到原来的对话。我会自行读取这些资料，接着给你一版长期运营方案。不必把结果粘贴回来。";
+      }else{
+        $("doneMessage").textContent="普通档案已尽量保存在本机。请回到原来的对话告诉我已经提交；若本地收集服务稍后启动，可以再提交一次，以便我从服务中读取。不必把结果粘贴回来。";
+      }
+      const hadPassword=result&&result._hadPassword;
+      if(hadPassword&&result.passwordStored){
+        $("passwordWarn").hidden=true;
+        $("summaryPassword").textContent="已单独安全保存，不会进入普通档案或对话";
+      }else if(hadPassword){
+        $("passwordWarn").hidden=false;
+        $("passwordWarn").textContent="账号密码没有保存，因为本地收集服务没有运行。请用 npm start 打开本页后再提交，以便把密码单独安全保存。不要把密码发在对话里。";
+        $("summaryPassword").textContent="未保存（本地收集服务未运行）";
+      }else{
+        $("passwordWarn").hidden=true;
+        $("summaryPassword").textContent="本次未填写";
+      }
+      $("summaryPlatform").textContent=record.platform||"";
+      $("summaryAccount").textContent=record.account||"";
+      $("summaryIdentity").textContent=record.identity||"";
       $("summaryArea").textContent=record.area||"暂未填写，方案里再判断";
-      $("summaryCoverage").textContent=record.coverage;
-      $("summaryLanguage").textContent=record.language;
-      $("summaryDirections").textContent=record.directions;
+      $("summaryGoals").textContent=record.goals||"";
+      $("summaryLanguage").textContent=record.language||"";
       $("summaryNote").textContent=record.note||"";
       $("summaryNoteRow").hidden=!record.note;
       $("summaryAudience").textContent=record.audiences||"";
@@ -474,124 +382,94 @@
       $("summaryFocusRow").hidden=!record.focuses;
       $("summaryZips").textContent=record.zips||"";
       $("summaryZipRow").hidden=!record.zips;
-      $("summaryDisplayName").textContent=record.displayName||"";
-      $("summaryDisplayNameRow").hidden=!record.displayName;
-      $("summaryDisplayTitle").textContent=record.displayTitle||"";
-      $("summaryDisplayTitleRow").hidden=!record.displayTitle;
-      $("summaryDisplayPhone").textContent=record.displayPhone||"";
-      $("summaryDisplayPhoneRow").hidden=!record.displayPhone;
-      $("summaryDisplayEmail").textContent=record.displayEmail||"";
-      $("summaryDisplayEmailRow").hidden=!record.displayEmail;
-      $("summaryDisplayPhoto").textContent=record.displayPhoto||"";
-      $("summaryDisplayPhotoRow").hidden=!record.displayPhoto;
-      fillExport(record);
+      $("summaryDirections").textContent=record.directions||"";
+      $("summaryDirectionRow").hidden=!record.directions;
+      $("summaryCoverage").textContent=record.coverage||"";
+      $("summaryCoverageRow").hidden=!record.coverage;
+      $("summaryPrefs").textContent=record.productionPrefs||"";
+      $("summaryPrefRow").hidden=!record.productionPrefs;
+      $("summaryCadence").textContent=record.cadence&&record.cadence!=="暂未确定"&&record.cadence!=="暂未确定，方案里再建议"?record.cadence:"";
+      $("summaryCadenceRow").hidden=!$("summaryCadence").textContent;
+    }
+    async function finishCollection(){
+      const coverage=(document.querySelector("[name=coverage]:checked")||{}).value;
+      let error="";let field;
+      const handle=$("username").value.trim();
+      const homeUrl=$("homeUrl").value.trim();
+      if(!handle&&!homeUrl){error="请填写账号或主页链接。";field=$("username")}
+      else if(!state.goal){error="请选择现在最希望得到什么。";field=$("goals").querySelector("input")}
+      else if(coverage==="指定国家或地区"&&!$("specificArea").value.trim()){error="请填写希望覆盖的国家、地区或城市。";field=$("specificArea")}
+      else if(parseZips($("serviceZips").value).length>10){error="服务邮编最多填写 10 个。";field=$("serviceZips")}
+      if(error){showError(error,field);return false}
+      showError("");
+      addCustomDirection();
+      const raw=collectRecord();
+      const hadPassword=Boolean(raw.password&&String(raw.password).trim());
+      const publicRecord=window.OpsCollect?OpsCollect.stripRecord(raw).publicRecord:Object.assign({},raw);
+      delete publicRecord.password;
+      const result=window.OpsCollect?await OpsCollect.persist("intake",raw,recordPlaintext):{ok:false,passwordStored:false,reason:"no-local-service"};
+      result._hadPassword=hadPassword;
+      $("accountPassword").value="";
+      raw.password="";
+      renderDone(publicRecord,result);
+      setDoneView(true);
+      return true;
     }
 
-    const demoRecord={account:"Instagram · demo_realtor（待授权）",goals:"帮我推荐",identity:"房产经纪人",area:"暂未填写，方案里再判断",coverage:"全球不限",language:"英语",audiences:"首次购房者",focuses:"投资物业",zips:"",directions:"买卖房知识 ＋ 市场解读 ＋ 成交故事 ＋ 个人与团队介绍",note:"",displayName:"Sarah Chen",displayTitle:"Realtor",displayPhone:"(512) 555-0100",displayEmail:"sarah@example.com",displayPhoto:"headshot.jpg"};
-    function saveLibrary(record){
-      try{
-        const all=JSON.parse(localStorage.getItem(LIBRARY_KEY)||"[]");
-        if(!Array.isArray(all))throw new Error("bad store");
-        all.unshift(record);
-        localStorage.setItem(LIBRARY_KEY,JSON.stringify(all.slice(0,20)));
-        localStorage.setItem("ops-display-profile",JSON.stringify({
-          displayName:record.displayName||"",
-          displayTitle:record.displayTitle||"",
-          displayPhone:record.displayPhone||"",
-          displayEmail:record.displayEmail||"",
-          displayPhoto:record.displayPhoto||""
-        }));
-      }catch(error){/* file preview may block storage; the on-page summary is enough */}
-    }
-    
-    $("pickDisplayPhoto").addEventListener("click",()=>$("displayPhoto").click());
-    $("displayPhoto").addEventListener("change",()=>{
-      const file=$("displayPhoto").files[0];
-      $("displayPhotoName").textContent=file?("已选择 "+file.name):"还没有选择头像";
-    });
+    $("addPlatform").addEventListener("click",addCustomPlatform);
+    $("customPlatform").addEventListener("keydown",event=>{if(event.key==="Enter"&&!event.isComposing){event.preventDefault();addCustomPlatform()}});
     $("addDirection").addEventListener("click",()=>{addCustomDirection();$("customDirection").focus()});
     $("customDirection").addEventListener("keydown",event=>{if(event.key==="Enter"&&!event.isComposing){event.preventDefault();addCustomDirection()}});
-    $("customDirection").addEventListener("input",()=>{$("directionFeedback").hidden=true});
-    document.querySelectorAll("[data-mode]").forEach(button=>button.addEventListener("click",()=>{
-      state.mode=button.dataset.mode;
-      document.querySelectorAll("[data-mode]").forEach(other=>{other.classList.toggle("on",other===button);other.setAttribute("aria-pressed",String(other===button))});
-      $("mode-login").style.display=state.mode==="login"?"block":"none";$("mode-link").style.display=state.mode==="link"?"block":"none";$("accountError").hidden=true;
-    }));
     $("homeUrl").addEventListener("input",()=>{
-      const platform=detectPlatform($("homeUrl").value);$("detected").classList.toggle("show",Boolean(platform));
+      const platform=detectPlatform($("homeUrl").value);
+      $("detected").classList.toggle("show",Boolean(platform));
       if(platform){state.platform=platform;$("detected").textContent="已识别 · "+platform;renderPlatforms()}
     });
     $("pasteBtn").addEventListener("click",async()=>{
       try{const text=await navigator.clipboard.readText();if(text){$("homeUrl").value=text.trim();$("homeUrl").dispatchEvent(new Event("input"));return}}catch(error){}$("homeUrl").focus();
     });
-    $("toPath").addEventListener("click",()=>{
-      let error="";let field;
-      if(state.mode==="login"){
-        if(!$("username").value.trim()){error="请填写账号。";field=$("username")}
-        else if(!$("password").value.trim()){error="请填写测试密码。";field=$("password")}
-      }else{
-        if(!detectPlatform($("homeUrl").value)){error="请填写受支持平台的有效主页链接。";field=$("homeUrl")}
-        else if(!$("authPass").value.trim()){error="请填写测试授权密码。";field=$("authPass")}
-      }
-      $("accountError").textContent=error;$("accountError").hidden=!error;if(error){field.focus();return}setView("p-needs");
-    });
-    ["username","password","homeUrl","authPass"].forEach(id=>$(id).addEventListener("input",()=>{$("accountError").hidden=true}));
-    $("identity").addEventListener("change",()=>{$("customIdentity").hidden=$("identity").value!=="其他";renderDirections();syncRealtorFields()});
+    $("identity").addEventListener("change",()=>{$("customIdentity").hidden=$("identity").value!=="其他";renderDirections()});
     $("language").addEventListener("change",()=>{$("customLanguage").hidden=$("language").value!=="其他"});
+    $("cadence").addEventListener("change",()=>{$("customCadence").hidden=$("cadence").value!=="其他"});
     document.querySelectorAll("[name=coverage]").forEach(input=>input.addEventListener("change",()=>{
-      $("specificArea").hidden=input.value!=="指定国家或地区";$("specificArea").removeAttribute("aria-invalid");$("needsError").hidden=true;
+      $("specificArea").hidden=input.value!=="指定国家或地区";showError("");
     }));
-    ["specificArea","customIdentity","customLanguage","needsNote","serviceArea","serviceZips","displayName","displayTitle","displayPhone","displayEmail"].forEach(id=>$(id).addEventListener("input",()=>{showNeedsError("",null);$(id).removeAttribute("aria-invalid")}));
-    $("needsForm").addEventListener("submit",event=>{event.preventDefault();finishCollection()});
-    $("finishNeeds").addEventListener("click",event=>{event.preventDefault();finishCollection()});
-    $("skipAccount").addEventListener("click",()=>{$("accountError").hidden=true;setView("p-needs")});
-    $("copyRecord").addEventListener("click",()=>autoCopyResult());
-    $("pickPhotos").addEventListener("click",()=>$("listingPhotos").click());
-    $("listingPhotos").addEventListener("change",()=>{
-      const files=[...$("listingPhotos").files].map(file=>file.name);
-      $("listingPhotoNames").textContent=files.length?("已选择 "+files.join("、")):"还没有选择照片";
+    $("finishNeeds").addEventListener("click",()=>finishCollection());
+    $("editAgain").addEventListener("click",()=>setDoneView(false));
+    $("closePage").addEventListener("click",()=>{
+      window.close();
+      $("doneMessage").textContent="如果这一页没有自动关闭，请直接关掉它，回到原来的对话。我会自行读取已保存的资料。";
     });
-    function finishMaterials(skipped){
-      const listing=$("listingNote").value.trim();
-      const area=$("listingArea").value.trim();
-      const price=$("listingPrice").value.trim();
-      const photos=$("listingPhotos").files.length;
-      const extra=$("extraMaterials").value.trim();
-      const own=$("ownTopics").value.trim();
-      const bits=["先做「买房流程」和「房源展示」"];
-      if(own)bits.push("你指定优先的内容会排在前面");
-      if(skipped&&!listing&&!photos)bits.push("房源材料暂缺，先制作不依赖房源的内容，材料后补");
-      else if(listing||area||price||photos)bits.push("已收到房源相关材料，生产时一并使用");
-      if(extra)bits.push("会参考你补充的展示要求");
-      $("produceSummary").textContent=bits.join("。")+"。完成后在对话里交付产物。此预览不执行真实生产。";
-      setView("p-produce");
-    }
-    $("materialsForm").addEventListener("submit",event=>{event.preventDefault();finishMaterials(false)});
-    $("skipMaterials").addEventListener("click",()=>finishMaterials(true));
-    $("editNeeds").addEventListener("click",()=>setView("p-needs"));
-    $("editAccount").addEventListener("click",()=>setView("p-account"));
-    $("backMaterials").addEventListener("click",()=>setView("p-materials"));
-    $("previewIntake").addEventListener("click",()=>setView(state.record?"p-library":"p-account"));
-    $("previewMaterials").addEventListener("click",()=>setView("p-materials"));
-    document.querySelector(".preview-tabs").addEventListener("keydown",event=>{
-      if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;event.preventDefault();
-      const materials=event.key==="End"||(event.key!=="Home"&&document.activeElement.id==="previewIntake");
-      const tab=$(materials?"previewMaterials":"previewIntake");tab.click();tab.focus();
-    });
-    renderPlatforms();renderGoals();renderChipGroup("audiences",audienceItems,state.audiences);renderChipGroup("focuses",focusItems,state.focuses);renderDirections();syncRealtorFields();
-    try{
-      if(window.top!==window.self) $("previewWarn").hidden=false;
-    }catch(err){ $("previewWarn").hidden=false; }
+
+    renderPlatforms();renderGoals();
+    renderChipGroup("audiences",audienceItems,state.audiences);
+    renderChipGroup("focuses",focusItems,state.focuses);
+    renderDirections();
+    try{if(window.top!==window.self)$("previewWarn").hidden=false}catch(err){$("previewWarn").hidden=false}
+
+    const demoRecord={
+      platform:"Instagram",
+      account:"Instagram · demo_realtor",
+      goals:"帮我推荐",
+      identity:"房产经纪人",
+      area:"Riverside, CA",
+      coverage:"全球不限",
+      language:"英语",
+      audiences:"首次购房者、卖家",
+      focuses:"住宅买卖",
+      zips:"",
+      directions:"买卖房知识 ＋ 市场解读",
+      note:"",
+      productionPrefs:"出镜：视内容而定",
+      cadence:"每周2期"
+    };
     const preview=new URLSearchParams(location.search).get("preview");
-    if(preview==="needs"||preview==="needs-full"||preview==="needs-profile"){setView("p-needs");if(preview==="needs-full")$("prefs").open=true}
-    else if(preview==="library"){
-      renderLibrary(demoRecord);
-      setView("p-library");
-      $("copyStatus").textContent="已自动复制，请直接粘贴回对话。";
-      $("copyStatus").hidden=false;
+    if(preview==="done"||preview==="library"){
+      renderDone(demoRecord,{ok:true,passwordStored:false,reason:"preview",_hadPassword:false});
+      setDoneView(true);
+    }else if(preview==="needs-full"){
+      $("foldAudience").open=true;$("foldProperty").open=true;$("foldDirections").open=true;$("foldPrefs").open=true;
     }
-    else if(preview==="materials")setView("p-materials");
-    else if(preview==="produce")setView("p-produce");
   </script>
 </body>
 </html>

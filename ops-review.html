@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>成片审核与交付</title>
+  <link rel="stylesheet" href="ops-ui.css">
+</head>
+<body>
+  <main class="wrap">
+    <div class="brand">成片审核</div>
+    <p class="lead">确认成片和文案 · 发布授权另行确认</p>
+    <section class="card">
+      <h1 id="reviewTitle">第 1 期成片</h1>
+      <p class="sub">请先看成片和发布文案。若要修改，写清具体改哪里即可，不会重新走定位或选题。成片确认和发布授权是两件事。</p>
+      <div class="film-box" id="filmBox">
+        成片预览位置<br>
+        <span style="color:#71717a">还没有成片文件时，这里只作为占位。有预览链接可填在下方。</span>
+      </div>
+      <div class="field">
+        <label class="cap" for="filmUrl">成片预览链接 <span>选填</span></label>
+        <input id="filmUrl" type="url" placeholder="https://">
+      </div>
+      <div class="field">
+        <label class="cap" for="caption">发布文案</label>
+        <textarea id="caption" placeholder="写成要发出去的字幕或说明。"></textarea>
+      </div>
+      <div class="field">
+        <label class="cap" for="revisionNotes">具体修改意见</label>
+        <textarea id="revisionNotes" placeholder="例如：前 3 秒字幕改成更短的那句；不要出现门牌号。"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-label">发布授权 <span>与成片确认分开</span></div>
+        <label class="chip"><input id="publishAuthorized" type="checkbox">我另外授权按约定由人发布本期</label>
+        <p class="help">当前发布由约定的人完成，页面不会自动发布。没有真实公开链接时，不要记成已经发布成功。</p>
+        <label class="cap" for="publicUrl" style="margin-top:12px">真实公开链接 <span>仅在已经发出后填写</span></label>
+        <input id="publicUrl" type="url" placeholder="仅填写对应渠道已经公开的真实链接">
+      </div>
+      <p class="error" id="formError" hidden></p>
+      <button type="button" class="btn btn-primary" id="approve">确认成片，可以交付</button>
+      <button type="button" class="btn btn-secondary" id="revise">需要修改</button>
+      <p class="footer-note">修改会回到制作返修，不重新做长期方案或前 5 期主题。</p>
+    </section>
+    <section class="card" id="savedCard" hidden>
+      <p class="overview-intro" id="savedIntro">审核结果已记录</p>
+      <p class="banner-ok" id="savedMessage"></p>
+    </section>
+    <footer class="page-footer">交付不等于发布 · 没有真实链接不记录发布结果</footer>
+  </main>
+  <script src="ops-collect-client.js"></script>
+  <script>
+    const $=id=>document.getElementById(id);
+    try{
+      const plan=JSON.parse(localStorage.getItem("ops-last-production_plan")||"null");
+      if(plan&&plan.title) $("reviewTitle").textContent="第 "+(plan.episode||1)+" 期成片 · "+plan.title;
+      if(plan&&plan.title&&!$("caption").value){
+        $("caption").value="第一次买房，先把预算和预批理清楚再看房。需要本地建议，再来找我。";
+      }
+    }catch(err){}
+    $("filmUrl").addEventListener("input",()=>{
+      const url=$("filmUrl").value.trim();
+      if(url) $("filmBox").textContent="已填写预览链接，提交后会随审核记录保存。";
+    });
+    function collect(decision){
+      return {
+        savedAt:new Date().toISOString(),
+        episode:1,
+        title:$("reviewTitle").textContent,
+        filmUrl:$("filmUrl").value.trim(),
+        caption:$("caption").value.trim(),
+        revisionNotes:$("revisionNotes").value.trim(),
+        decision,
+        publishAuthorized:$("publishAuthorized").checked,
+        publicUrl:$("publicUrl").value.trim()
+      };
+    }
+    function plaintext(record){
+      const lines=[
+        "【成片审核】",
+        "题目："+record.title,
+        "成片预览："+(record.filmUrl||"未提供预览链接，页面使用占位"),
+        "发布文案："+record.caption,
+        "审核决定："+(record.decision==="approve"?"确认成片，可以交付":"需要修改"),
+        record.revisionNotes?"修改意见："+record.revisionNotes:"",
+        "发布授权："+(record.publishAuthorized?"已另外授权由约定的人发布":"尚未授权发布"),
+        record.publicUrl?"真实公开链接："+record.publicUrl:"没有真实公开链接，不记录为已发布"
+      ];
+      return lines.filter(Boolean).join("\n");
+    }
+    async function save(decision){
+      const record=collect(decision);
+      if(decision==="revise"&&!record.revisionNotes){
+        $("formError").hidden=false;$("formError").textContent="请写明要改哪里，再提交修改。";return;
+      }
+      if(record.publicUrl&&!/^https?:\/\//i.test(record.publicUrl)){
+        $("formError").hidden=false;$("formError").textContent="公开链接需要是已在对应渠道发出的真实地址，不要填写尚未发布的占位。";return;
+      }
+      $("formError").hidden=true;
+      const result=window.OpsCollect?await OpsCollect.persist("film_review",record,plaintext):{ok:false};
+      $("savedCard").hidden=false;
+      if(decision==="approve"){
+        $("savedIntro").textContent="成片已确认，可以交付";
+        let message="成片确认完成。";
+        if(record.publishAuthorized) message+="你另外授权了由约定的人发布。";
+        else message+="尚未授权发布，不会把本期记成已经发出。";
+        if(record.publicUrl) message+="已记录真实公开链接。";
+        else message+="目前没有真实公开链接，因此不会记录一次成功的发布。";
+        if(!result.ok) message+=" 本次已记在本机。";
+        $("savedMessage").textContent=message;
+      }else{
+        $("savedIntro").textContent="已记下修改意见";
+        $("savedMessage").textContent="我会按你写明的问题协调返修，再交你审核。不会重新走定位和选题。";
+      }
+    }
+    $("approve").addEventListener("click",()=>save("approve"));
+    $("revise").addEventListener("click",()=>save("revise"));
+  </script>
+</body>
+</html>

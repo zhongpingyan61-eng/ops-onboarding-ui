@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>内容日历</title>
+  <link rel="stylesheet" href="ops-ui.css">
+</head>
+<body>
+  <main class="wrap">
+    <div class="brand">内容日历</div>
+    <p class="lead">按已确认主题和更新节奏自动排期 · 日期可调整</p>
+    <section class="card">
+      <h1>自动排好前几期的节点</h1>
+      <p class="sub">不必从一张空白日历开始。如需特定时区或配合拍摄时间，直接在对话里告诉我就行。外部平台日历的实时同步还没有逐项验证，目前以这里保存的本地日历为准。</p>
+      <div class="grid-2">
+        <div class="field">
+          <label class="cap" for="cadence">更新节奏</label>
+          <select id="cadence">
+            <option value="每周1期">每周 1 期</option>
+            <option value="每周2期" selected>每周 2 期</option>
+            <option value="每周3期">每周 3 期</option>
+            <option value="每两周1期">每两周 1 期</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="cap" for="startDate">起始发布日</label>
+          <input id="startDate" type="date">
+        </div>
+      </div>
+      <div class="field">
+        <label class="cap" for="timezone">时区 <span>可后补，也可在对话里确认</span></label>
+        <input id="timezone" type="text" placeholder="例如：America/Los_Angeles" maxlength="80">
+      </div>
+      <button type="button" class="btn btn-secondary" id="rearrange" style="margin-top:0">按当前节奏重新排布</button>
+      <p class="error" id="formError" hidden></p>
+      <div id="calList" style="margin-top:16px"></div>
+      <button type="button" class="btn btn-primary" id="saveCal">保存日历</button>
+      <p class="footer-note">之后制作方案或进度有变化，应同步回这里。这一页不会调用外部日历接口。</p>
+    </section>
+    <section class="card" id="savedCard" hidden>
+      <p class="overview-intro">日历已保存</p>
+      <p class="banner-ok" id="savedMessage"></p>
+    </section>
+    <footer class="page-footer">发布节点是预计时间 · 实际发布仍由约定的人完成</footer>
+  </main>
+  <script src="ops-collect-client.js"></script>
+  <script>
+    const $=id=>document.getElementById(id);
+    function addDays(date,days){const next=new Date(date.getTime());next.setDate(next.getDate()+days);return next}
+    function ymd(date){return date.getFullYear()+"-"+String(date.getMonth()+1).padStart(2,"0")+"-"+String(date.getDate()).padStart(2,"0")}
+    function perWeekOf(label){
+      if(/每两周/.test(label)) return 0.5;
+      const match=String(label).match(/每周\s*([0-9]+)/);
+      return match?Math.max(1,Number(match[1])):2;
+    }
+    function arrange(topics,cadence,startDate,timezone){
+      const perWeek=perWeekOf(cadence);
+      const step=Math.max(1,Math.round(7/perWeek));
+      const start=new Date(startDate+"T00:00:00");
+      return topics.filter(topic=>topic&&topic.confirmed).map((topic,index)=>{
+        const publish=addDays(start,index*step);
+        const review=addDays(publish,-1);
+        const production=addDays(publish,-3);
+        const prep=addDays(publish,-5);
+        return {
+          topicId:topic.id||("topic-"+(index+1)),
+          title:topic.title||("第 "+(index+1)+" 期"),
+          order:index+1,
+          assetPrepOn:ymd(prep<start?start:prep),
+          productionOn:ymd(production<start?start:production),
+          reviewOn:ymd(review<start?start:review),
+          publishOn:ymd(publish),
+          status:"planned"
+        };
+      });
+    }
+    let topics=[];
+    try{
+      const saved=JSON.parse(localStorage.getItem("ops-confirmed-topics")||localStorage.getItem("ops-last-topics")||"null");
+      topics=(saved&&saved.topics||[]).filter(item=>item.confirmed);
+    }catch(err){topics=[]}
+    if(!topics.length){
+      topics=[
+        {id:"topic-1",title:"第一次买房要先搞清什么",confirmed:true},
+        {id:"topic-2",title:"Riverside 这一季市场怎么看",confirmed:true},
+        {id:"topic-3",title:"一套适合家庭的房子怎么讲",confirmed:true}
+      ];
+    }
+    if(!$("startDate").value){
+      const start=new Date();
+      start.setDate(start.getDate()+7);
+      $("startDate").value=ymd(start);
+    }
+    try{
+      const intake=JSON.parse(localStorage.getItem("ops-last-intake")||"null");
+      if(intake&&intake.cadence&&/每周|每两周/.test(intake.cadence)) $("cadence").value=intake.cadence;
+    }catch(err){}
+
+    let items=[];
+    function render(){
+      const list=$("calList");
+      list.replaceChildren();
+      if(!items.length){
+        const empty=document.createElement("p");
+        empty.className="banner-warn";
+        empty.textContent="还没有已确认的主题。请先在主题页确认前几期，再回来自动排期。";
+        list.append(empty);
+        return;
+      }
+      items.forEach((item,index)=>{
+        const wrap=document.createElement("article");
+        wrap.className="cal-item";
+        wrap.innerHTML=`
+          <div class="topic-head"><strong>第 ${item.order} 期 · ${item.title}</strong><span class="badge wait">${item.status==="planned"?"已排期":item.status}</span></div>
+          <div class="cal-dates">
+            <div class="field"><label class="cap">素材准备</label><input type="date" data-i="${index}" data-k="assetPrepOn"></div>
+            <div class="field"><label class="cap">制作</label><input type="date" data-i="${index}" data-k="productionOn"></div>
+            <div class="field"><label class="cap">审核</label><input type="date" data-i="${index}" data-k="reviewOn"></div>
+            <div class="field"><label class="cap">预计发布</label><input type="date" data-i="${index}" data-k="publishOn"></div>
+          </div>
+        `;
+        wrap.querySelectorAll("input[type=date]").forEach(input=>{
+          input.value=item[input.dataset.k];
+          input.addEventListener("change",()=>{items[Number(input.dataset.i)][input.dataset.k]=input.value});
+        });
+        list.append(wrap);
+      });
+    }
+    function rebuild(){
+      items=arrange(topics,$("cadence").value,$("startDate").value,$("timezone").value.trim());
+      render();
+    }
+    function record(){
+      return {
+        savedAt:new Date().toISOString(),
+        cadence:$("cadence").value,
+        perWeek:perWeekOf($("cadence").value),
+        startDate:$("startDate").value,
+        timezone:$("timezone").value.trim(),
+        items,
+        platformSync:"unverified"
+      };
+    }
+    function plaintext(cal){
+      const lines=["【内容日历】","更新节奏："+cal.cadence,"起始发布日："+cal.startDate];
+      if(cal.timezone) lines.push("时区："+cal.timezone);
+      cal.items.forEach(item=>{
+        lines.push("第 "+item.order+" 期："+item.title);
+        lines.push("素材准备："+item.assetPrepOn);
+        lines.push("制作："+item.productionOn);
+        lines.push("审核："+item.reviewOn);
+        lines.push("预计发布："+item.publishOn);
+      });
+      lines.push("说明：外部平台日历同步尚未验证。");
+      return lines.join("\n");
+    }
+    $("rearrange").addEventListener("click",rebuild);
+    $("saveCal").addEventListener("click",async()=>{
+      if(!items.length){$("formError").hidden=false;$("formError").textContent="没有可保存的排期。";return}
+      $("formError").hidden=true;
+      const payload=record();
+      const result=window.OpsCollect?await OpsCollect.persist("calendar",payload,plaintext):{ok:false};
+      try{localStorage.setItem("ops-last-calendar",JSON.stringify(payload))}catch(err){}
+      $("savedCard").hidden=false;
+      $("savedMessage").textContent=(result.ok?"日历已写入本地收集服务。":"日历已记在本机。")+"之后制作方案或实际进度有变化，应同步回这张日历。";
+    });
+    window.OpsCalendarSync={
+      applyProgress(updates){
+        (updates||[]).forEach(patch=>{
+          const item=items.find(row=>row.topicId===patch.topicId||row.order===patch.order);
+          if(!item)return;
+          ["assetPrepOn","productionOn","reviewOn","publishOn","status"].forEach(key=>{if(patch[key])item[key]=patch[key]});
+        });
+        render();
+      }
+    };
+    rebuild();
+  </script>
+</body>
+</html>
