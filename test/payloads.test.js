@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 import { parseCollection } from "../lib/parse.js";
 import {
+  parseAccountField,
   toReportPublication,
   toRequestContent,
   toSubmitAccount
@@ -49,4 +50,15 @@ test("report_publication requires a real public URL", () => {
     url: "https://www.instagram.com/p/example"
   });
   assert.equal(args.url, "https://www.instagram.com/p/example");
+});
+
+test("parseAccountField keeps both a handle and a profile URL, and ignores skipped intake", () => {
+  const both = parseAccountField("Instagram · riverside_homes · https://www.instagram.com/riverside_homes");
+  assert.equal(both.platform, "Instagram");
+  assert.equal(both.handle, "riverside_homes");
+  assert.equal(both.profile_url, "https://www.instagram.com/riverside_homes");
+  const skipped = parseAccountField("尚未填写，稍后接入", "Instagram");
+  assert.equal(skipped.handle, undefined);
+  assert.equal(skipped.profile_url, undefined);
+  assert.equal(skipped.platform, "Instagram");
 });
